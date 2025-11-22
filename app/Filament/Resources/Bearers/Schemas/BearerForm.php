@@ -23,7 +23,7 @@ class BearerForm
                     ->schema([
                         Grid::make(12)->schema([
                     Select::make('post_id')
-                    ->relationship('post', 'name_en')
+                    ->relationship('post', 'name_ta')
                     ->required()
                     ->columnSpan(['sm' => 12, 'md' => 6, 'lg' => 6]),
                     Select::make('assembly_id')
@@ -52,6 +52,7 @@ class BearerForm
                     FileUpload::make('photo')
                     ->label('Photo')
                     ->image()
+                    ->disk('public')
                     ->directory('bearers')
                     ->nullable()
                     ->columnSpan(['sm' => 12, 'md' => 6, 'lg' => 6]),

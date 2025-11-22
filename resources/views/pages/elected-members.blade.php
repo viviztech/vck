@@ -7,12 +7,12 @@
   {{-- Page Header --}}
   <section class="relative bg-gray-900 dark:bg-gray-950 py-24 md:py-32">
     <div class="relative max-w-7xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">{{ __('site.elected_members.title') }}</h1>
+      <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-4">{{ __('site.menu.elected_members') }}</h1>
       <p class="text-xl text-gray-300 max-w-3xl mx-auto">{{ __('site.elected_members.subtitle') }}</p>
     </div>
   </section>
 
-   <section class="members-section">
+  <section class="members-section">
         <div class="container">
             <div class="members-wrap">
                 <h2 class="animation-element slide-top">{{ __('site.home.members_section_title') }}</h2>
@@ -20,31 +20,28 @@
                     <div class="members-top-row">
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/thol-thirmavalavan.png') }}" alt="{{ __('site.home.member_1_name') }}">
+                                <img src="{{ asset('assets/images/images/thol-thirmavalavan.png') }}" alt="{{ __('site.home.member_1_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_1_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_1_name') }}</h6>
                                 <span>{{ __('site.home.member_1_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/thirumaofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/thirumaofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/thol.thirumaavalavan/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/raj-kumar.png') }}" alt="{{ __('site.home.member_2_name') }}">
+                                <img src="{{ asset('assets/images/images/raj-kumar.png') }}" alt="{{ __('site.home.member_2_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_2_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_2_name') }}</h6>
                                 <span>{{ __('site.home.member_2_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/WriterRavikumar" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/WriterRavikumar" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
@@ -52,68 +49,62 @@
                     <div class="members-bottom-row">
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/sinthanai-selvan.png') }}" alt="{{ __('site.home.member_3_name') }}">
+                                <img src="{{ asset('assets/images/images/sinthanai-selvan.png') }}" alt="{{ __('site.home.member_3_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_3_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_3_name') }}</h6>
                                 <span>{{ __('site.home.member_3_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/SinthanaiVCKofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/sinthanaivck" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/sinthanai_vck" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/aloor-shah-nawaz.png') }}" alt="{{ __('site.home.member_4_name') }}">
+                                <img src="{{ asset('assets/images/images/aloor-shah-nawaz.png') }}" alt="{{ __('site.home.member_4_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_4_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_4_name') }}</h6>
                                 <span>{{ __('site.home.member_4_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/aloor.shanavas" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/aloor_ShaNavas" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/aloor_sha_navas/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/panaiyur-babu.png') }}" alt="{{ __('site.home.member_5_name') }}">
+                                <img src="{{ asset('assets/images/images/panaiyur-babu.png') }}" alt="{{ __('site.home.member_5_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_5_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_5_name') }}</h6>
                                 <span>{{ __('site.home.member_5_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/panaiyurmbabu/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/PanaiyurBabu" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/panaiyurbabumla/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/balaji.png') }}" alt="{{ __('site.home.member_6_name') }}">
+                                <img src="{{ asset('assets/images/images/balaji.png') }}" alt="{{ __('site.home.member_6_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
-                                <h6 class="animation-element slide-top">{{ __('site.home.member_6_name') }}</h6>
+                                <h6 class="slide-top">{{ __('site.home.member_6_name') }}</h6>
                                 <span>{{ __('site.home.member_6_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/s.s.balaji" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/VckBalaji" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
   {{-- Achievements Section --}}

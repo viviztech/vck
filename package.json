@@ -4,7 +4,11 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "build:production": "npm ci && npm run build",
+        "build:netlify": "npm ci && npm run build",
+        "build:railway": "npm ci && npm run build",
+        "build:heroku": "npm ci && npm run build"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

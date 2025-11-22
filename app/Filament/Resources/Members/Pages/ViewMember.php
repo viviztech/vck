@@ -17,43 +17,20 @@ class ViewMember extends ViewRecord
     protected function getHeaderActions(): array
     {
         $member = $this->record;
+        $downloadUrl = route('members.idcard.download', ['member' => $member->id, 'type' => 'full']);
+        $filename = 'member-id-card-' . $member->id . '-full.pdf';
         
         return [
             Action::make('download_full')
-                ->label('Download ID Card (Both Sides)')
+                ->label('Download ID Card')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
-                ->action(function () use ($member) {
-                    // Generate URL without localization prefix
-                    $url = url('/members/' . $member->id . '/idcard/full');
-                    // Force full page navigation for download
-                    return redirect($url);
-                })
-                ->tooltip('Download full ID card with both front and back sides'),
-            
-            Action::make('download_front')
-                ->label('Download Front Only')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->color('info')
-                ->action(function () use ($member) {
-                    // Generate URL without localization prefix
-                    $url = url('/members/' . $member->id . '/idcard/front');
-                    // Force full page navigation for download
-                    return redirect($url);
-                })
-                ->tooltip('Download front side of ID card only'),
-            
-            Action::make('download_back')
-                ->label('Download Back Only')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->color('gray')
-                ->action(function () use ($member) {
-                    // Generate URL without localization prefix
-                    $url = url('/members/' . $member->id . '/idcard/back');
-                    // Force full page navigation for download
-                    return redirect($url);
-                })
-                ->tooltip('Download back side of ID card only'),
+                ->url('#')
+                ->openUrlInNewTab(false)
+                ->extraAttributes([
+                    'onclick' => "event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); const link = document.createElement('a'); link.href = '{$downloadUrl}'; link.download = '{$filename}'; link.style.display = 'none'; document.body.appendChild(link); link.click(); setTimeout(() => document.body.removeChild(link), 100); return false;",
+                ])
+                ->tooltip('Download member ID card'),
         ];
     }
 

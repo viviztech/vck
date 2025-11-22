@@ -31,10 +31,25 @@ class BookForm
                                     ->maxLength(255)
                                     ->columnSpan(6),
 
-                                TextInput::make('category')
-                                    ->label('வகை')
-                                    ->maxLength(255)
-                                    ->columnSpan(6),
+                                TextInput::make('price')
+                                    ->label('விலை (₹)')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->step(0.01)
+                                    ->required()
+                                    ->columnSpan(4),
+
+                                TextInput::make('stock')
+                                    ->label('பங்கு')
+                                    ->numeric()
+                                    ->default(0)
+                                    ->required()
+                                    ->columnSpan(4),
+
+                                Toggle::make('is_available')
+                                    ->label('கிடைக்கும்')
+                                    ->default(true)
+                                    ->columnSpan(4),
 
                                 TextInput::make('slug')
                                     ->label('Slug')
@@ -52,13 +67,6 @@ class BookForm
                                     ->disk('public')
                                     ->directory('books/covers')
                                     ->imageEditor()
-                                    ->columnSpan(6),
-
-                                FileUpload::make('file_path')
-                                    ->label('புத்தக கோப்பு (PDF)')
-                                    ->disk('public')
-                                    ->directory('books/files')
-                                    ->acceptedFileTypes(['application/pdf'])
                                     ->columnSpan(6),
 
                                 TextInput::make('sort_order')

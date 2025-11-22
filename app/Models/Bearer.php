@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Bearer extends Model
 {
@@ -20,6 +21,18 @@ class Bearer extends Model
         'instagram',
         'youtube',
     ];
+
+    /**
+     * Get the photo URL attribute
+     */
+    public function getPhotoUrlAttribute()
+    {
+        if (!$this->photo) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->photo);
+    }
 
     public function post()
     {

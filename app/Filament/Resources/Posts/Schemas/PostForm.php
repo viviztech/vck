@@ -19,7 +19,7 @@ class PostForm
                     ->schema([
                         Grid::make(12)->schema([
                             Select::make('postingstage_id')
-                                ->relationship('postingStage', 'name_en')
+                                ->relationship('postingStage', 'name_ta')
                                 ->required()
                                 ->searchable()
                                 ->preload()

@@ -95,7 +95,7 @@
                         <div class="space-y-2">
                             <a href="{{ route('ideology') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Ideology & Principles</a>
                             <a href="{{ route('history') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Our History</a>
-                            <a href="{{ route('administration') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Administration</a>
+                            <a href="{{ route('leadership') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Leadership</a>
                             <a href="{{ route('elected-members') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Elected Members</a>
                             <a href="{{ route('office-bearers') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Office Bearers</a>
                             <a href="{{ route('party-representatives') }}" class="block text-blue-600 hover:text-blue-800 text-sm">• Party Representatives</a>

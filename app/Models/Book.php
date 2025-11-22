@@ -10,17 +10,21 @@ class Book extends Model
     protected $fillable = [
         'title',
         'author',
-        'category',
         'description',
         'cover_image',
-        'file_path',
         'slug',
         'is_active',
-        'sort_order'
+        'sort_order',
+        'price',
+        'stock',
+        'is_available'
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_available' => 'boolean',
+        'price' => 'decimal:2',
+        'stock' => 'integer',
     ];
 
     protected static function boot()
@@ -45,13 +49,16 @@ class Book extends Model
         return $query->where('is_active', true);
     }
 
-    public function scopeByCategory($query, $category)
+
+    public function orders()
     {
-        return $query->where('category', $category);
+        return $this->hasMany(BookOrder::class);
     }
 
-    public function getCategoriesAttribute()
+    public function scopeAvailable($query)
     {
-        return self::select('category')->distinct()->pluck('category');
+        return $query->where('is_available', true)
+                     ->where('is_active', true)
+                     ->where('stock', '>', 0);
     }
 }

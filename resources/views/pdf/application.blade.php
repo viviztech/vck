@@ -52,7 +52,7 @@
         .application-id {
             text-align: right;
             color: #666;
-            font-size: 10px;
+            font-size: 14px;
             margin-bottom: 8px;
             padding-bottom: 3px;
         }
@@ -138,6 +138,7 @@
             vertical-align: top;
             font-size: 13px;
             line-height: 1.6;
+            color:rgb(14, 0, 0);
         }
 
         .info-value {
@@ -284,16 +285,16 @@
         
         // Define labels based on language
         $labels = [
-            'application_id' => $hasTamilData ? 'விண்ணப்ப ஐடி' : 'Application ID',
-            'membership_id' => $hasTamilData ? 'உறுப்பினர் ஐடி' : 'Membership ID',
+            'application_id' => $hasTamilData ? 'விண்ணப்ப எண்' : 'Application ID',
+            'membership_id' => $hasTamilData ? 'உறுப்பினர் எண்' : 'Membership ID',
             'name' => $hasTamilData ? 'பெயர்' : 'Full Name',
             'mobile_number' => $hasTamilData ? 'மொபைல் எண்' : 'Mobile Number',
             'address' => $hasTamilData ? 'முகவரி' : 'Address',
-            'voterid_no' => $hasTamilData ? 'வோட்டர் ஐடி' : 'Voter ID',
+            'voterid_no' => $hasTamilData ? 'வாக்காளர் அட்டை எண்' : 'Voter ID',
             'aadhar_no' => $hasTamilData ? 'ஆதார் எண்' : 'Aadhar Number',
             'district' => $hasTamilData ? 'மாவட்டம்' : 'District',
-            'assembly' => $hasTamilData ? 'சட்டமன்றம்' : 'Assembly',
-            'post' => $hasTamilData ? 'பதவி' : 'Post',
+            'assembly' => $hasTamilData ? 'சட்டமன்ற தொகுதி' : 'Assembly',
+            'post' => $hasTamilData ? 'பொறுப்பு நிலை' : 'Post Applied',
         ];
     @endphp
 

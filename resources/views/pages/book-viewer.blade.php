@@ -25,8 +25,6 @@
                         </svg>
                         {{ __('site.books.back_to_books') }}
                     </a>
-                    <span class="text-gray-500">|</span>
-                    <span class="text-gray-700">{{ $book->category }}</span>
                 </div>
 
                 <div class="flex items-center space-x-2">
@@ -98,17 +96,8 @@
         const canvas = document.getElementById('pdfCanvas');
         const ctx = canvas.getContext('2d');
 
-        // Load the PDF
-        const loadingTask = pdfjsLib.getDocument('{{ asset($book->file_path) }}');
-        loadingTask.promise.then(function(pdf) {
-            pdfDoc = pdf;
-            document.getElementById('totalPages').textContent = pdf.numPages;
-            document.getElementById('loadingIndicator').classList.add('hidden');
-            document.getElementById('pdfCanvas').classList.remove('hidden');
-
-            // Initial page render
-            renderPage(pageNum);
-        });
+        // Note: PDF viewing functionality has been removed as file_path field is no longer available
+        document.getElementById('loadingIndicator').innerHTML = '<div class="text-center"><p class="text-gray-600">PDF viewer is not available. Please contact administrator.</p></div>';
 
         // Render page function
         function renderPage(num) {

@@ -5,15 +5,6 @@
     // Calculate age from date of birth
     $age = $member->dob ? \Carbon\Carbon::parse($member->dob)->age : null;
     
-    // Format gender
-    $genderTamil = match($member->gender) {
-        'Male' => 'ஆண்',
-        'Female' => 'பெண்',
-        'Other' => 'மற்றவை',
-        default => ''
-    };
-    $genderEnglish = $member->gender ?? '';
-    
     // Format joining date (using created_at)
     $joiningDate = $member->created_at ? $member->created_at->format('d.m.Y') : now()->format('d.m.Y');
     
@@ -27,38 +18,28 @@
         }
     }
     
-    // Detect if content is Tamil
-    $isTamil = function($text) {
-        return preg_match('/[\x{0B80}-\x{0BFF}]/u', $text ?? '') === 1;
-    };
-    
-    $hasTamilData = $isTamil($member->name ?? '') ||
-                    $isTamil($member->father_name ?? '') ||
-                    $isTamil($member->district->name_ta ?? '') ||
-                    $isTamil($member->assembly->name_ta ?? '');
-    
-    // Define labels based on language
+    // Fixed English labels
     $labels = [
-        'name' => $hasTamilData ? 'பெயர்' : 'Name',
-        'father_name' => $hasTamilData ? 'தந்தை பெயர்' : 'Father Name',
-        'age_gender' => $hasTamilData ? 'வயது / பாலினம்' : 'Age / Gender',
-        'join_date' => $hasTamilData ? 'உறுப்பினர் தேதி' : 'Join Date',
-        'assembly' => $hasTamilData ? 'சட்டமன்றம்' : 'Assembly',
-        'district' => $hasTamilData ? 'மாவட்டம்' : 'District',
-        'membership_id' => $hasTamilData ? 'உறுப்பினர் எண்' : 'Membership ID',
+        'name' => 'Name',
+        'father_name' => 'Father Name',
+        'age_gender' => 'Age / Gender',
+        'join_date' => 'Join Date',
+        'assembly' => 'Assembly',
+        'district' => 'District',
+        'membership_id' => 'Membership ID',
     ];
     
-    // Get values based on language
+    // Get values
     $nameValue = $member->name ?? 'N/A';
     $fatherNameValue = $member->father_name ?? 'N/A';
-    $ageGenderValue = ($age ? $age . ' / ' : '') . ($hasTamilData ? $genderTamil : $genderEnglish);
+    $ageGenderValue = ($age ? $age . ' / ' : '') . ($member->gender ?? '');
     $joinDateValue = $joiningDate;
-    $assemblyValue = $hasTamilData ? ($member->assembly->name_ta ?? $member->assembly->name_en ?? 'N/A') : ($member->assembly->name_en ?? 'N/A');
-    $districtValue = $hasTamilData ? ($member->district->name_ta ?? $member->district->name_en ?? 'N/A') : ($member->district->name_en ?? 'N/A');
+    $assemblyValue = $member->assembly->name ?? 'N/A';
+    $districtValue = $member->district->name ?? 'N/A';
     $membershipIdValue = $member->member_no ?? 'N/A';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ $hasTamilData ? 'ta' : 'en' }}">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,7 +73,7 @@
             align-items: center;
             justify-content: center;
             gap: 10mm;
-            padding: 10mm;
+            padding: 23mm 10mm 10mm 17mm;
         }
 
         .id-card {
@@ -118,7 +99,7 @@
             width: 100%;
             height: 100%;
             display: flex;
-            padding: 4mm;
+            padding: 13mm 4mm 4mm 9mm;
         }
 
         .left-content {
@@ -127,12 +108,13 @@
             flex-direction: column;
             justify-content: center;
             padding-right: 3mm;
+            padding-top: 2mm;
         }
 
         .field-row {
-            margin-bottom: 2.5mm;
+            margin-bottom: 1.2mm;
             font-size: 7pt;
-            line-height: 1.4;
+            line-height: 1.0;
         }
 
         .field-label {
@@ -152,12 +134,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-left: 2mm;
+            padding-left: 4mm;
         }
 
         .photo-container {
-            width: 28mm;
-            height: 35mm;
+            width: 16mm;
+            height: 22mm;
             border: 2px solid #dc2626;
             border-radius: 3px;
             overflow: hidden;
@@ -241,7 +223,7 @@
                             <img src="{{ $photoPath }}" alt="Member Photo">
                         @else
                             <div class="photo-placeholder">
-                                {{ $hasTamilData ? 'புகைப்படம் இல்லை' : 'No Photo' }}
+                                No Photo
                             </div>
                         @endif
                     </div>

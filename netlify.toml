@@ -1,0 +1,108 @@
+# Netlify Configuration for Laravel Application
+# Note: Netlify doesn't natively support PHP/Laravel applications.
+# This configuration is for building assets and deploying static parts.
+# For full Laravel deployment, consider alternatives (see NETLIFY_DEPLOYMENT.md)
+
+[build]
+  # Base directory for the build
+  base = "."
+  
+  # Build command - builds assets only (Laravel app needs PHP server)
+  command = "npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+  
+  # Publish directory - where Netlify serves files from
+  publish = "public"
+  
+  # Environment variables (set these in Netlify dashboard)
+  # APP_ENV = "production"
+  # APP_DEBUG = "false"
+
+[build.environment]
+  # PHP version (Netlify Functions support)
+  PHP_VERSION = "8.2"
+  # Node version
+  NODE_VERSION = "20"
+  
+  # Build timeouts
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# Redirects for Laravel routes
+[[redirects]]
+  from = "/*"
+  to = "/index.php"
+  status = 200
+  force = false
+  conditions = {Role = ["admin"], Country = ["US"]}
+
+# SPA-like redirects (for client-side routing if needed)
+[[redirects]]
+  from = "/*"
+  to = "/index.php"
+  status = 200
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/storage/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/build/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "text/css; charset=utf-8"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Netlify Functions (for API endpoints - requires PHP runtime plugin)
+[functions]
+  node_bundler = "esbuild"
+
+# Processing configuration
+[context.production.environment]
+  NODE_ENV = "production"
+  APP_ENV = "production"
+  APP_DEBUG = "false"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "development"
+  APP_ENV = "local"
+  APP_DEBUG = "true"
+
+# Plugin configuration (if using PHP runtime)
+# [[plugins]]
+#   package = "@netlify/plugin-nextjs"
+

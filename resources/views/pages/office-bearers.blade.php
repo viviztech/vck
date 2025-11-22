@@ -3,6 +3,9 @@
 @section('title', __('site.office_bearers.title'))
 
 @section('content')
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 
   {{-- Page Header --}}
   <section class="relative bg-gray-900 dark:bg-gray-950 py-24 md:py-32">
@@ -14,215 +17,105 @@
 
   {{-- Office Bearers by Post --}}
   @if($posts->isNotEmpty())
-    @foreach($posts as $post)
-      @php
-        $postBearers = $post->bearers;
-        // Determine section background color (alternate with design system colors)
-        $bgClass = $loop->even
-          ? 'bg-gradient-to-br from-blue-50 via-white to-red-50 dark:from-gray-950 dark:via-gray-900 dark:to-blue-950/30'
-          : 'bg-white dark:bg-gray-950';
+    <section class="relative py-20 lg:py-28 px-4 bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      {{-- Background Elements --}}
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 left-10 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
+      </div>
 
-        // Determine if this is a leadership position (first few posts)
-        $isLeadership = $loop->index < 3; // First 3 posts are leadership
-        $gridClass = $isLeadership ? 'md:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
-      @endphp
+      <div class="max-w-7xl mx-auto w-full relative z-10">
+        @foreach($posts as $post)
+          @php
+            $postBearers = $post->bearers;
+          @endphp
 
-      <section class="relative min-h-screen flex items-center justify-center px-4 {{ $bgClass }} overflow-hidden">
-        {{-- Background Elements --}}
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-          <div class="absolute top-1/4 right-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-          <div class="absolute bottom-1/4 left-10 w-96 h-96 bg-red-500/5 rounded-full blur-3xl"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto w-full relative z-10 py-20 lg:py-28">
           {{-- Post Title --}}
-          <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+          <div class="text-center mb-12 {{ !$loop->first ? 'mt-16' : '' }}">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               {{ app()->getLocale() === 'ta' ? $post->name_ta : $post->name_en }}
             </h2>
             @if($post->description_en || $post->description_ta)
-              <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto font-light">
+              <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 {{ app()->getLocale() === 'ta' ? $post->description_ta : $post->description_en }}
               </p>
             @endif
           </div>
 
           {{-- Bearers Grid --}}
-          <div class="grid grid-cols-1 {{ $gridClass }} gap-8 md:gap-12">
+          <div class="grid xl:grid-cols-3 md:grid-cols-2 gap-6 mb-16">
             @foreach($postBearers as $bearer)
-              @if($isLeadership)
-                {{-- Leadership Card (Larger) --}}
-                <div class="group relative" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                  {{-- Animated Border --}}
-                  <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-red-600 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
-
-                  <div class="relative bg-gradient-to-br from-blue-50 to-red-50 dark:from-blue-950/30 dark:to-red-950/30 rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-800 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                  <div class="relative overflow-hidden">
+              <div>
+                <div class="bg-white dark:bg-gray-800 shadow rounded p-5">
+                  <div class="flex items-center gap-6">
                     @if($bearer->photo)
-                      <img class="w-full h-80 object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                           src="{{ asset($bearer->photo) }}"
-                           alt="{{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}">
+                      <img src="{{ Storage::disk('public')->url($bearer->photo) }}" 
+                           alt="{{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}" 
+                           class="rounded-xl h-32 w-32 object-cover">
                     @else
-                      <div class="w-full h-80 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div class="rounded-xl h-32 w-32 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                       </div>
                     @endif
-                  </div>
+                    <div>
+                      <h2 class="text-xl mb-1 text-gray-900 dark:text-white">
+                        {{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}
+                      </h2>
+                      @if($bearer->post)
+                        <p class="font-medium text-lg text-gray-500 dark:text-gray-400">
+                          {{ app()->getLocale() === 'ta' ? $bearer->post->name_ta : $bearer->post->name_en }}
+                        </p>
+                      @endif
+                      @if($bearer->assembly)
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          {{ app()->getLocale() === 'ta' ? $bearer->assembly->name_ta : $bearer->assembly->name_en }}
+                        </p>
+                      @endif
 
-                  <div class="p-6 text-center bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
-                    <h3 class="text-2xl font-bold tracking-tight text-blue-900 dark:text-blue-100 mb-1">
-                      {{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}
-                    </h3>
-
-                    <span class="block text-blue-600 dark:text-blue-400 font-semibold text-lg mb-2">
-                      {{ app()->getLocale() === 'ta' ? $post->name_ta : $post->name_en }}
-                    </span>
-
-                    @if($bearer->assembly)
-                      <p class="text-sm text-blue-600/70 dark:text-blue-300/60 mb-3">
-                        {{ app()->getLocale() === 'ta' ? $bearer->assembly->name_ta : $bearer->assembly->name_en }}
-                      </p>
-                    @endif
-
-                    @if($bearer->content_en || $bearer->content_ta)
-                      <p class="text-blue-700/80 dark:text-blue-200/70 text-sm line-clamp-3">
-                        {{ app()->getLocale() === 'ta' ? $bearer->content_ta : $bearer->content_en }}
-                      </p>
-                    @endif
-
-                    {{-- Social Links --}}
-                    @if($bearer->facebook || $bearer->x || $bearer->instagram || $bearer->youtube)
-                      <div class="flex justify-center gap-3 mt-4">
+                      <div class="flex items-center gap-3 mt-4">
                         @if($bearer->facebook)
-                          <a href="{{ $bearer->facebook }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                          <a href="{{ $bearer->facebook }}" target="_blank" class="border fill-gray-400 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-blue-700 hover:fill-white h-8 w-8">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" id="facebook">
+                              <path d="M15.12,5.32H17V2.14A26.11,26.11,0,0,0,14.26,2C11.54,2,9.68,3.66,9.68,6.7V9.32H6.61v3.56H9.68V22h3.68V12.88h3.06l.46-3.56H13.36V7.05C13.36,6,13.64,5.32,15.12,5.32Z"></path>
                             </svg>
                           </a>
                         @endif
-
                         @if($bearer->x)
-                          <a href="{{ $bearer->x }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                          <a href="{{ $bearer->x }}" target="_blank" class="border fill-gray-400 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-sky-500 hover:fill-white h-8 w-8">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" id="twitter">
+                              <path d="M22,5.8a8.49,8.49,0,0,1-2.36.64,4.13,4.13,0,0,0,1.81-2.27,8.21,8.21,0,0,1-2.61,1,4.1,4.1,0,0,0-7,3.74A11.64,11.64,0,0,1,3.39,4.62a4.16,4.16,0,0,0-.55,2.07A4.09,4.09,0,0,0,4.66,10.1,4.05,4.05,0,0,1,2.8,9.59v.05a4.1,4.1,0,0,0,3.3,4A3.93,3.93,0,0,1,5,13.81a4.9,4.9,0,0,1-.77-.07,4.11,4.11,0,0,0,3.83,2.84A8.22,8.22,0,0,1,3,18.34a7.93,7.93,0,0,1-1-.06,11.57,11.57,0,0,0,6.29,1.85A11.59,11.59,0,0,0,20,8.45c0-.17,0-.35,0-.53A8.43,8.43,0,0,0,22,5.8Z"></path>
                             </svg>
                           </a>
                         @endif
-
                         @if($bearer->instagram)
-                          <a href="{{ $bearer->instagram }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                          <a href="{{ $bearer->instagram }}" target="_blank" class="border fill-gray-400 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-pink-600 hover:fill-white h-8 w-8">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="0 0 24 24" id="instagram">
+                              <path d="M17.34,5.46h0a1.2,1.2,0,1,0,1.2,1.2A1.2,1.2,0,0,0,17.34,5.46Zm4.6,2.42a7.59,7.59,0,0,0-.46-2.43,4.94,4.94,0,0,0-1.16-1.77,4.7,4.7,0,0,0-1.77-1.15,7.3,7.3,0,0,0-2.43-.47C15.06,2,14.72,2,12,2s-3.06,0-4.12.06a7.3,7.3,0,0,0-2.43.47A4.78,4.78,0,0,0,3.68,3.68,4.7,4.7,0,0,0,2.53,5.45a7.3,7.3,0,0,0-.47,2.43C2,8.94,2,9.28,2,12s0,3.06.06,4.12a7.3,7.3,0,0,0,.47,2.43,4.7,4.7,0,0,0,1.15,1.77,4.78,4.78,0,0,0,1.77,1.15,7.3,7.3,0,0,0,2.43.47C8.94,22,9.28,22,12,22s3.06,0,4.12-.06a7.3,7.3,0,0,0,2.43-.47,4.7,4.7,0,0,0,1.77-1.15,4.85,4.85,0,0,0,1.16-1.77,7.59,7.59,0,0,0,.46-2.43c0-1.06.06-1.4.06-4.12S22,8.94,21.94,7.88ZM20.14,16a5.61,5.61,0,0,1-.34,1.86,3.06,3.06,0,0,1-.75,1.15,3.19,3.19,0,0,1-1.15.75,5.61,5.61,0,0,1-1.86.34c-1,.05-1.37.06-4,.06s-3,0-4-.06A5.73,5.73,0,0,1,6.1,19.8,3.27,3.27,0,0,1,5,19.05a3,3,0,0,1-.74-1.15A5.54,5.54,0,0,1,3.86,16c0-1-.06-1.37-.06-4s0-3,.06-4A5.54,5.54,0,0,1,4.21,6.1,3,3,0,0,1,5,5,3.14,3.14,0,0,1,6.1,4.2,5.73,5.73,0,0,1,8,3.86c1,0,1.37-.06,4-.06s3,0,4,.06a5.61,5.61,0,0,1,1.86.34A3.06,3.06,0,0,1,19.05,5,3.06,3.06,0,0,1,19.8,6.1,5.61,5.61,0,0,1,20.14,8c.05,1,.06,1.37.06,4S20.19,15,20.14,16ZM12,6.87A5.13,5.13,0,1,0,17.14,12,5.12,5.12,0,0,0,12,6.87Zm0,8.46A3.33,3.33,0,1,1,15.33,12,3.33,3.33,0,0,1,12,15.33Z"></path>
                             </svg>
                           </a>
                         @endif
-
                         @if($bearer->youtube)
-                          <a href="{{ $bearer->youtube }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500 transition-colors">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                          <a href="{{ $bearer->youtube }}" target="_blank" class="border fill-gray-400 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-red-600 hover:fill-white h-8 w-8">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="youtube">
+                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
                             </svg>
                           </a>
                         @endif
                       </div>
-                    @endif
-                  </div>
+                    </div>
                   </div>
                 </div>
-              @else
-                {{-- Regular Bearer Card (Smaller) --}}
-                <div class="group relative" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                  {{-- Animated Border --}}
-                  <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-red-600 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
-
-                  <div class="relative bg-gradient-to-br from-blue-50 to-red-50 dark:from-blue-950/30 dark:to-red-950/30 rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-800 text-center transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
-                  <div class="relative overflow-hidden">
-                    @if($bearer->photo)
-                      <img class="w-full h-64 object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                           src="{{ asset($bearer->photo) }}"
-                           alt="{{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}">
-                    @else
-                      <div class="w-full h-64 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                      </div>
-                    @endif
-                  </div>
-
-                  <div class="p-6 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
-                    <h4 class="text-xl font-bold text-blue-900 dark:text-blue-100 mb-1">
-                      {{ app()->getLocale() === 'ta' ? $bearer->name_ta : $bearer->name_en }}
-                    </h4>
-
-                    <p class="text-blue-600 dark:text-blue-400 font-semibold mb-2">
-                      {{ app()->getLocale() === 'ta' ? $post->name_ta : $post->name_en }}
-                    </p>
-
-                    @if($bearer->assembly)
-                      <p class="text-xs text-blue-600/70 dark:text-blue-300/60 mb-2">
-                        {{ app()->getLocale() === 'ta' ? $bearer->assembly->name_ta : $bearer->assembly->name_en }}
-                      </p>
-                    @endif
-
-                    {{-- Social Links --}}
-                    @if($bearer->facebook || $bearer->x || $bearer->instagram || $bearer->youtube)
-                      <div class="flex justify-center gap-2 mt-3">
-                        @if($bearer->facebook)
-                          <a href="{{ $bearer->facebook }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                          </a>
-                        @endif
-
-                        @if($bearer->x)
-                          <a href="{{ $bearer->x }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                          </a>
-                        @endif
-
-                        @if($bearer->instagram)
-                          <a href="{{ $bearer->instagram }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-500 transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
-                          </a>
-                        @endif
-
-                        @if($bearer->youtube)
-                          <a href="{{ $bearer->youtube }}" target="_blank" rel="noopener"
-                             class="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500 transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                            </svg>
-                          </a>
-                        @endif
-                      </div>
-                    @endif
-                  </div>
-                  </div>
-                </div>
-              @endif
+              </div>
             @endforeach
           </div>
-        </div>
-      </section>
-    @endforeach
+        @endforeach
+      </div>
+    </section>
   @else
     {{-- Empty State --}}
-    <section class="py-20 lg:py-28 bg-white dark:bg-gray-900">
+    <section class="py-20 lg:py-28 bg-gray-50 dark:bg-gray-900">
       <div class="max-w-7xl mx-auto px-4 text-center">
         <div class="w-20 h-20 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

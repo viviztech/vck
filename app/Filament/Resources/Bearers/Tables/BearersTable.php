@@ -28,7 +28,8 @@ class BearersTable
                 \Filament\Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 \Filament\Tables\Columns\ImageColumn::make('photo')
-                    ->label('Photo'),
+                    ->label('Photo')
+                    ->disk('public'),
                 \Filament\Tables\Columns\TextColumn::make('facebook')
                     ->label('Facebook'),
                 \Filament\Tables\Columns\TextColumn::make('x')

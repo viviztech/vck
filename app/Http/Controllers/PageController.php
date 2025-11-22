@@ -40,28 +40,106 @@ class PageController extends Controller
 
     public function home()
     {
-        $latest_news = Media::orderBy('event_date', 'desc')->where('category_id', 3)->take(6)->get();
-        $press_releases = Media::orderBy('event_date', 'desc')->where('category_id', 1)->take(6)->get();
-        $events = Media::orderBy('event_date', 'desc')->where('category_id', 2)->take(6)->get();
-        $pressMeetGallery = Media::orderBy('event_date', 'desc')->where('category_id', 4)->take(5)->get();
-        $kalathiGallery = Media::orderBy('event_date', 'desc')->where('category_id', 5)->take(9)->get();
-        $velichamTvGallery = Media::orderBy('event_date', 'desc')->where('category_id', 7)->take(5)->get();
-        $lives = Media::orderBy('event_date', 'desc')->where('category_id', 8)->take(9)->get();
-        $videoGallery = Media::orderBy('event_date', 'desc')->where('category_id', 6)->take(5)->get();
-        $gallery = Media::orderBy('event_date', 'desc')->where('category_id', 5)->take(6)->get();
-        // Fetch latest 10 posts for "LATEST EVENTS" section (all media, sorted by date)
-        $latestEvents = Media::orderBy('event_date', 'desc')->take(10)->get();
+        // Cache the home page data for 5 minutes to reduce database load
+        $cacheKey = 'home_page_data_' . app()->getLocale();
+        
+        $data = cache()->remember($cacheKey, 300, function () {
+            // Optimize queries: select only needed columns and eager load relationships
+            $selectFields = ['id', 'category_id', 'title_ta', 'title_en', 'slug', 'content_ta', 'content_en', 'featured_image', 'event_date', 'video_link'];
+            
+            $latest_news = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 3)
+                ->take(6)
+                ->get();
+            
+            $press_releases = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 1)
+                ->take(6)
+                ->get();
+            
+            $events = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 2)
+                ->take(6)
+                ->get();
+            
+            $pressMeetGallery = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 10)
+                ->take(5)
+                ->get();
+            
+            $kalathiGallery = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 7)
+                ->take(9)
+                ->get();
+            
+            $velichamTvGallery = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 9)
+                ->take(5)
+                ->get();
+            
+            $lives = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 8)
+                ->take(9)
+                ->get();
+            
+            $videoGallery = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 6)
+                ->take(5)
+                ->get();
+            
+            $gallery = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 5)
+                ->take(6)
+                ->get();
+            
+            // Fetch latest 10 posts for "LATEST EVENTS" section
+            $latestEvents = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->take(10)
+                ->get();
 
-        // Fetch latest Party News - try to match either a category slug or name
-        $partyNews = Media::orderBy('event_date', 'desc')
-            ->whereHas('category', function ($q) {
-                $q->where('slug', 'party-news')
-                  ->orWhere('name_en', 'Latest News');
-            })
-            ->take(8)
-            ->get();
+            // Fetch latest Party News
+            $partyNews = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->whereHas('category', function ($q) {
+                    $q->where('name_en', 'Latest News');
+                })
+                ->take(8)
+                ->get();
 
-        return view('pages.home', compact('latest_news', 'press_releases', 'events', 'pressMeetGallery', 'kalathiGallery', 'velichamTvGallery', 'lives', 'videoGallery', 'gallery', 'latestEvents', 'partyNews'));
+            // Fetch Exclusive Interviews (category_id 4) - first one featured, rest in sidebar
+            $exclusiveInterviews = Media::select($selectFields)
+                ->with('category:id,name_ta,name_en')
+                ->orderBy('event_date', 'desc')
+                ->where('category_id', 4)
+                ->whereNotNull('video_link')
+                ->take(5)
+                ->get();
+
+            return compact('latest_news', 'press_releases', 'events', 'pressMeetGallery', 'kalathiGallery', 'velichamTvGallery', 'lives', 'videoGallery', 'gallery', 'latestEvents', 'partyNews', 'exclusiveInterviews');
+        });
+
+        return view('pages.home', $data);
     }
 
     public function ideology()
@@ -147,9 +225,21 @@ class PageController extends Controller
         }
     }
 
-    public function administration()
+    public function leadership()
     {
-        return view('pages.administration');
+        // Fetch bearers for specific leadership positions:
+        // General Secretary (1), Deputy General Secretary (7), Headquarters Secretary (3)
+        $leadershipPosts = [1, 3, 7];
+        
+        $bearers = Bearer::with(['post', 'assembly'])
+            ->whereIn('post_id', $leadershipPosts)
+            ->orderByRaw('FIELD(post_id, 1, 7, 3)') // Order: General Secretary (1), Deputy General Secretary (7), Headquarters Secretary (3)
+            ->get();
+
+        // Group bearers by post_id for organized display
+        $bearersByPost = $bearers->groupBy('post_id');
+
+        return view('pages.leadership', compact('bearers', 'bearersByPost'));
     }
 
     public function electedMembers()
@@ -160,15 +250,21 @@ class PageController extends Controller
     public function officeBearers()
     {
         // Fetch all bearers with their post and assembly relationships
+        // Exclude post_ids 1 (General Secretary), 3 (Headquarters Secretary), and 7 (Deputy General Secretary)
+        $excludedPosts = [1, 3, 7];
+        
         $bearers = Bearer::with(['post', 'assembly'])
+            ->whereNotIn('post_id', $excludedPosts)
             ->orderBy('post_id')
             ->get();
 
         // Group bearers by post_id
         $bearersByPost = $bearers->groupBy('post_id');
 
-        // Get all posts that have bearers for display
+        // Get all posts that have bearers for display, excluding district-level posts (postingstage_id = 2) and excluded posts
         $posts = Post::whereHas('bearers')
+            ->where('postingstage_id', '!=', 2) // Exclude district-level posts
+            ->whereNotIn('id', $excludedPosts) // Exclude General Secretary, Headquarters Secretary, Deputy General Secretary
             ->with('bearers')
             ->orderBy('name_en')
             ->get();
@@ -186,7 +282,136 @@ class PageController extends Controller
         // Get the post information for the title
         $post = Post::find(15);
 
-        return view('pages.party-representatives', compact('representatives', 'post'));
+        // District Representatives data
+        $districtRepresentatives = [
+            ['district' => 'வடசென்னை கிழக்கு', 'name' => 'சி.சவுந்தர்'],
+            ['district' => 'வடசென்னை மேற்கு', 'name' => 'உஷாராணி'],
+            ['district' => 'வடசென்னை வடக்கு', 'name' => 'இளங்கோவன்'],
+            ['district' => 'வடசென்னை தெற்கு', 'name' => 'அப்புன்'],
+            ['district' => 'மையசென்னை கிழக்கு', 'name' => 'சாரநாத்'],
+            ['district' => 'மையசென்னை மேற்கு', 'name' => 'வேலுமணி'],
+            ['district' => 'மையசென்னை வடக்கு', 'name' => 'சேத்துப்பட்டு இளங்கோ'],
+            ['district' => 'தென்சென்னை மையம்', 'name' => 'சைதை ஜேக்கப்'],
+            ['district' => 'தென்சென்னை வடக்கு', 'name' => 'கரிகால் வளவன்'],
+            ['district' => 'தென்சென்னை தெற்கு', 'name' => 'இளையா'],
+            ['district' => 'மேற்கு சென்னை', 'name' => 'ஞான முதல்வன்'],
+            ['district' => 'திருவள்ளூர் கிழக்கு', 'name' => 'நீலமேகம்'],
+            ['district' => 'திருவள்ளூர் மேற்கு', 'name' => 'தளபதி சுந்தர்'],
+            ['district' => 'திருவள்ளூர் மையம்', 'name' => 'அருண் கவுதம்'],
+            ['district' => 'வேலுர் கிழக்கு', 'name' => 'கோவேந்தன்'],
+            ['district' => 'வேலூர் மாநகர்', 'name' => 'பிலிப்'],
+            ['district' => 'வேலுர் மேற்கு', 'name' => 'சுதாகர்'],
+            ['district' => 'திருப்பத்தூர்', 'name' => 'வெற்றி கொண்டான்'],
+            ['district' => 'திருப்பத்தூர் வடக்கு', 'name' => 'ஓம்பிரகாசம்'],
+            ['district' => 'செங்கல்பட்டு மையம்', 'name' => 'கானல் விழி'],
+            ['district' => 'செங்கல்பட்டு மேற்கு', 'name' => 'பொன்னிவளவன்'],
+            ['district' => 'செங்கல்பட்டு வடக்கு', 'name' => 'தென்னவன்'],
+            ['district' => 'செங்கல்பட்டு தெற்கு', 'name' => 'தமிழினி'],
+            ['district' => 'ஆவடி மாநகர்', 'name' => 'ஆதவன்'],
+            ['district' => 'காஞ்சிபுரம் மாநகர்', 'name' => 'மதி ஆதவன்'],
+            ['district' => 'ஓசூர் மாநகர்', 'name' => 'ராமச்சந்திரன்'],
+            ['district' => 'கடலூர் மாநகர்', 'name' => 'செந்தில்'],
+            ['district' => 'கும்பகோணம் மாநகர்', 'name' => 'ராஜ் குமார்'],
+            ['district' => 'தஞ்சாவூர் மாநகர்', 'name' => 'இடிமுரசு இலக்கண்ணன்'],
+            ['district' => 'கரூர் மாநகர்', 'name' => 'இளங்கோ'],
+            ['district' => 'திண்டுக்கல் மாநகர்', 'name' => 'மைதீன் பாவா'],
+            ['district' => 'சிவகாசி மாநகர்', 'name' => 'செல்வன் ஜேசுதாஸ்'],
+            ['district' => 'நெல்லை மாநகர்', 'name' => 'முத்துவளவன்'],
+            ['district' => 'நாகர்கோவில் மாநகர்', 'name' => 'அப்துல் காலித்'],
+            ['district' => 'சேலம் கிழக்கு', 'name' => 'கருப்பையா'],
+            ['district' => 'சேலம் மேற்கு', 'name' => 'மேட்டூர் மெய்யழகன்'],
+            ['district' => 'சேலம் வடக்கு', 'name' => 'தெய்வானை'],
+            ['district' => 'சேலம் மையம்', 'name' => 'காஜமேயிதீண்'],
+            ['district' => 'சேலம் தெற்கு', 'name' => 'விந தமிழன்பன்'],
+            ['district' => 'ஈரோடு மையம்', 'name' => 'சாதிக்'],
+            ['district' => 'ஈரோடு மேற்கு', 'name' => 'தங்கவேல்'],
+            ['district' => 'ஈரோடு தெற்கு', 'name' => 'கமலநாதன்'],
+            ['district' => 'ஈரோடு வடக்கு', 'name' => 'அந்தியூர் ஈஸ்வரன்'],
+            ['district' => 'நாமக்கல் கிழக்கு', 'name' => 'மும்பை அர்ஜூன்'],
+            ['district' => 'நாமக்கல் மேற்கு', 'name' => 'முகிலன்'],
+            ['district' => 'நாமக்கல் மையம்', 'name' => 'நீலவானத்து நிலவன்'],
+            ['district' => 'கோவை கிழக்கு', 'name' => 'ஸ்டீபன்'],
+            ['district' => 'கோவை மாநகர் வடக்கு', 'name' => 'குரு'],
+            ['district' => 'கோவை மாநகர் தெற்கு', 'name' => 'குமணன்'],
+            ['district' => 'கோவை வடக்கு', 'name' => 'குடி மைந்தன்'],
+            ['district' => 'கோவை தெற்கு', 'name' => 'அசோக்குமார்'],
+            ['district' => 'திருச்சி கிழக்கு', 'name' => 'அன்புசெல்வன்'],
+            ['district' => 'திருச்சி தெற்கு', 'name' => 'ஆற்றலரசு'],
+            ['district' => 'திருச்சி வடக்கு', 'name' => 'கலைச்செல்வன்'],
+            ['district' => 'தஞ்சாவூர் மையம்', 'name' => 'ஜெய்சங்கர்'],
+            ['district' => 'தஞ்சாவூர் மேற்கு', 'name' => 'ஜான்பீட்டர்'],
+            ['district' => 'தஞ்சாவூர் தெற்கு', 'name' => 'அரவிந்த்குமார்'],
+            ['district' => 'தஞ்சாவூர் வடக்கு', 'name' => 'முல்லைவளவன்'],
+            ['district' => 'திருப்பூர் மாநகர்', 'name' => 'மூர்த்தி'],
+            ['district' => 'திருப்பூர் கிழக்கு', 'name' => 'ஓவியர் மின்னல்'],
+            ['district' => 'திருப்பூர் தெற்கு', 'name' => 'சதிஷ்குமார்'],
+            ['district' => 'திருப்பூர் வடக்கு', 'name' => 'சண்முகம்'],
+            ['district' => 'மதுரை கிழக்கு', 'name' => 'முத்துப் பாண்டியன்'],
+            ['district' => 'மதுரை மேற்கு', 'name' => 'சிந்தனைவளவன்'],
+            ['district' => 'மதுரை தெற்கு', 'name' => 'காளிமுத்து'],
+            ['district' => 'மதுரை மாநகர் தெற்கு', 'name' => 'ரவிக்குமார்'],
+            ['district' => 'மதுரை மாநகர் வடக்கு', 'name' => 'சுடர்மொழி'],
+            ['district' => 'தேனி கிழக்கு', 'name' => 'ரபிக் முகமது'],
+            ['district' => 'தேனி மேற்கு', 'name' => 'போடி மதன்'],
+            ['district' => 'திண்டுக்கல் மையம்', 'name' => 'தமிழரசன்'],
+            ['district' => 'திண்டுக்கல் மேற்கு', 'name' => 'கணபதி'],
+            ['district' => 'திண்டுக்கல் கிழக்கு', 'name' => 'தமிழ்முகம்'],
+            ['district' => 'தூத்துக்குடி தெற்கு', 'name' => 'டிலைட்டா'],
+            ['district' => 'தூத்துக்குடி மையம்', 'name' => 'கணேசன்'],
+            ['district' => 'தூத்துக் குடி வடக்கு', 'name' => 'முருகன்'],
+            ['district' => 'நெல்லை தெற்கு', 'name' => 'அருட் செல்வன்'],
+            ['district' => 'நெல்லை மேற்கு', 'name' => 'எப்.சி.சேகர்'],
+            ['district' => 'கன்னியாகுமரி மையம்', 'name' => 'மேசியா'],
+            ['district' => 'கன்னியாகுமரி மேற்கு', 'name' => 'தேவகி'],
+            ['district' => 'கன்னியாகுமரி கிழக்கு', 'name' => 'பேரறிவாளன்'],
+            ['district' => 'தாம்பரம் மாநகர் வடக்கு', 'name' => 'திருநீர்மலை தமிழ ரசன்'],
+            ['district' => 'தாம்பரம் மாநகர் தெற்கு', 'name' => 'சாமுவேல்'],
+            ['district' => 'சேலம் மாநகர் வடக்கு', 'name' => 'காஜா மைதீன்'],
+            ['district' => 'சேலம் மாநகர் தெற்கு', 'name' => 'மொழியரசு'],
+            ['district' => 'திருச்சி மாநகர் மேற்கு', 'name' => 'புல்லட் லாரன்ஸ்'],
+            ['district' => 'திருச்சி மாநகர் கிழக்கு', 'name' => 'கனியமுதன்'],
+            ['district' => 'சிவகங்கை தெற்கு', 'name' => 'பாலையா'],
+            ['district' => 'ராமநாதபுரம் கிழக்கு', 'name' => 'அற்புதகுமார்'],
+            ['district' => 'ராமநாதபுரம் மேற்கு', 'name' => 'பிரபாகர்'],
+            ['district' => 'விருதுநகர் கிழக்கு', 'name' => 'இனியவன்'],
+            ['district' => 'விருதுநகர் மேற்கு', 'name' => 'பிரியதர்ஷினி'],
+            ['district' => 'விருதுநகர் மையம்', 'name' => 'சாத்தூர் சந்திரன்'],
+            ['district' => 'காஞ்சிபுரம் வடக்கு', 'name' => 'மேனகா தேவி கோமகன்'],
+            ['district' => 'காஞ்சிபுரம் தெற்கு', 'name' => 'எழிலரசு'],
+            ['district' => 'மயிலாடுதுறை வடக்கு', 'name' => 'இனியவன்'],
+            ['district' => 'மயிலாடுதுறை தெற்கு', 'name' => 'மோகன்குமார்'],
+            ['district' => 'நாகப்பட்டினம் வடக்கு', 'name' => 'அருட் செல்வன்'],
+            ['district' => 'நாகப்பட்டினம் தெற்கு', 'name' => 'செல்வராஜ்'],
+            ['district' => 'கடலூர் மாநகர் மாவட்ட செயலாளர்', 'name' => 'மு.செந்தில்'],
+            ['district' => 'கடலூர் வடக்கு', 'name' => 'அறிவுடை நம்பி'],
+            ['district' => 'கடலூர் மையம்', 'name' => 'நீதிவள்ளல்'],
+            ['district' => 'கடலூர் மேற்கு', 'name' => 'திராவிடமணி'],
+            ['district' => 'கடலூர் தெற்கு', 'name' => 'மணவாளன்'],
+            ['district' => 'கடலூர் கிழக்கு', 'name' => 'அரங்க-தமிழ் ஒளி'],
+            ['district' => 'பெரம்பலூர் மேற்கு', 'name' => 'ரத்தின வேல்'],
+            ['district' => 'பெரம்பலூர் கிழக்கு', 'name' => 'கலையரசன்'],
+            ['district' => 'தென்காசி தெற்கு', 'name' => 'பன்புலி செல்வம்'],
+            ['district' => 'தென்காசி வடக்கு', 'name' => 'John Thamos'],
+            ['district' => 'ராணிபேட்டை', 'name' => 'Ramesh Karna'],
+            ['district' => 'ஆற்காடு', 'name' => 'Prabu'],
+            ['district' => 'கள்ளகுறிச்சி( சங்கராபுரம்)', 'name' => 'வேல் பழனி அம்மா'],
+            ['district' => 'மூணார்', 'name' => 'ஜெயபால்'],
+        ];
+
+        return view('pages.party-representatives', compact('representatives', 'post', 'districtRepresentatives'));
+    }
+
+    public function partyWings()
+    {
+        // Fetch all subbodies (party wings) with their postingstage
+        $locale = app()->getLocale();
+        $nameField = $locale === 'ta' ? 'name_ta' : 'name_en';
+        
+        $partyWings = Subbody::with('postingstage')
+            ->orderBy($nameField, 'asc')
+            ->get();
+
+        return view('pages.party-wings', compact('partyWings'));
     }
 
     public function join()
@@ -371,33 +596,29 @@ class PageController extends Controller
 
     public function books()
     {
-        $categories = Book::active()
-            ->select('category')
-            ->distinct()
-            ->orderBy('category')
-            ->get()
-            ->pluck('category');
+        $books = Book::active()
+            ->orderBy('sort_order')
+            ->orderBy('title')
+            ->get();
 
-        $booksByCategory = [];
-        foreach ($categories as $category) {
-            $books = Book::active()
-                ->where('category', $category)
-                ->orderBy('sort_order')
-                ->orderBy('title')
-                ->get();
-
-            if ($books->isNotEmpty()) {
-                $booksByCategory[$category] = $books;
-            }
-        }
-
-        return view('pages.books', compact('booksByCategory', 'categories'));
+        return view('pages.books', compact('books'));
     }
 
     public function showBook($bookSlug)
     {
         $book = Book::active()->where('slug', $bookSlug)->firstOrFail();
         return view('pages.book-viewer', compact('book'));
+    }
+
+    public function bookOrder($bookSlug)
+    {
+        $book = Book::active()->where('slug', $bookSlug)->firstOrFail();
+        
+        if (!$book->is_available || $book->stock <= 0) {
+            return redirect()->route('books')->with('error', 'This book is currently out of stock.');
+        }
+        
+        return view('pages.book-order', compact('book'));
     }
 
     public function applications()

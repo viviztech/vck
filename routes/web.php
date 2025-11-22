@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ApplicationPdfController;
+use App\Http\Controllers\BookOrderController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group(
@@ -30,10 +31,11 @@ Route::group(
         Route::get('/coming-soon', function () {
             return view('coming-soon');
         })->name('coming-soon');
-        Route::get('/administration', [PageController::class, 'administration'])->name('administration');
+        Route::get('/leadership', [PageController::class, 'leadership'])->name('leadership');
         Route::get('/elected-members', [PageController::class, 'electedMembers'])->name('elected-members');
         Route::get('/office-bearers', [PageController::class, 'officeBearers'])->name('office-bearers');
         Route::get('/party-representatives', [PageController::class, 'partyRepresentatives'])->name('party-representatives');
+        Route::get('/party-wings', [PageController::class, 'partyWings'])->name('party-wings');
         Route::get('/join', [PageController::class, 'join'])->name('join');
         Route::post('/join', [PageController::class, 'joinStore'])->name('join.store');
 
@@ -44,6 +46,10 @@ Route::group(
 
         Route::get('/books', [PageController::class, 'books'])->name('books');
         Route::get('/books/{book}', [PageController::class, 'showBook'])->name('books.show');
+        Route::get('/books/{book}/order', [PageController::class, 'bookOrder'])->name('books.order');
+        Route::post('/book-orders', [BookOrderController::class, 'store'])->name('book-orders.store');
+        Route::post('/book-orders/verify', [BookOrderController::class, 'verifyPayment'])->name('book-orders.verify');
+        Route::get('/book-orders/success', [BookOrderController::class, 'success'])->name('book-orders.success');
 
         Route::get('/applications', [PageController::class, 'applications'])->name('applications');
         Route::post('/applications', [PageController::class, 'applicationsStore'])->name('applications.store');

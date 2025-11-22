@@ -18,7 +18,7 @@ $locale = app()->getLocale();
             <div class="w-full h-full flex-shrink-0 relative">
                 <picture>
                     <source media="(max-width: 768px)" srcset="{{ asset('assets/images/bg/slider1.mobile.jpg') }}">
-                    <img src="{{ asset('assets/images/bg/slider1.jpg') }}" class="w-full h-full object-cover" alt="Slide 1">
+                    <img src="{{ asset('assets/images/bg/slider1.jpg') }}" class="w-full h-full object-cover" alt="Slide 1" loading="eager" fetchpriority="high">
                 </picture>
                 {{-- Optional: Overlay for better text readability if needed --}}
                 <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
@@ -28,7 +28,7 @@ $locale = app()->getLocale();
             <div class="w-full h-full flex-shrink-0 relative">
                 <picture>
                     <source media="(max-width: 768px)" srcset="{{ asset('assets/images/bg/slider2.mobile.jpg') }}">
-                    <img src="{{ asset('assets/images/bg/slider2.jpg') }}" class="w-full h-full object-cover" alt="Slide 2">
+                    <img src="{{ asset('assets/images/bg/slider2.jpg') }}" class="w-full h-full object-cover" alt="Slide 2" loading="lazy">
                 </picture>
                 {{-- Optional: Overlay for better text readability if needed --}}
                 <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
@@ -38,7 +38,7 @@ $locale = app()->getLocale();
             <div class="w-full h-full flex-shrink-0 relative">
                 <picture>
                     <source media="(max-width: 768px)" srcset="{{ asset('assets/images/bg/slider3.mobile.jpg') }}">
-                    <img src="{{ asset('assets/images/bg/slider3.jpg') }}" class="w-full h-full object-cover" alt="Slide 3">
+                    <img src="{{ asset('assets/images/bg/slider3.jpg') }}" class="w-full h-full object-cover" alt="Slide 3" loading="lazy">
                 </picture>
                 {{-- Optional: Overlay for better text readability if needed --}}
                 <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
@@ -64,7 +64,7 @@ $locale = app()->getLocale();
     <section id="about" class="relative min-h-screen flex items-center justify-center px-4 bg-white dark:bg-gray-950 overflow-hidden">
         {{-- Background Image with Overlay --}}
         <div class="absolute inset-0 z-0">
-            <img src="{{ asset('assets/images/mla/15.jpg') }}" alt="Background" class="w-full h-full object-cover opacity-90 dark:opacity-90">
+            <img src="{{ asset('assets/images/mla/15.jpg') }}" alt="Background" class="w-full h-full object-cover opacity-90 dark:opacity-90" loading="lazy">
             <div class="absolute inset-0 bg-gradient-to-b from-white/85 via-white/90 to-white/85 dark:from-gray-950/85 dark:via-gray-950/90 dark:to-gray-950/85"></div>
         </div>
 
@@ -96,7 +96,7 @@ $locale = app()->getLocale();
 
                         {{-- Image with border --}}
                         <div class="relative">
-                            <img src="{{ asset('assets/images/about/about-1.png') }}" alt="About Our Party" class="relative w-full h-auto rounded-2xl">
+                            <img src="{{ asset('assets/images/about/about-1.png') }}" alt="About Our Party" class="relative w-full h-auto rounded-2xl" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ $locale = app()->getLocale();
         <div class=" events-wrap container">
             <!-- Left Column -->
             <div class="column left">
-                <h2>LATEST EVENTS</h2>
+                <h2>{{ __('site.latest_events') }}</h2>
                 @forelse($latestEvents as $event)
                 @php
                     $locale = app()->getLocale();
@@ -136,6 +136,11 @@ $locale = app()->getLocale();
                     <p>No events available at the moment.</p>
                 </div>
                 @endforelse
+                <div class="text-center mt-4">
+                    <a href="{{ route('events') }}" class="card-link" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
+                        {{ __('site.view_all_news') }}
+                    </a>
+                </div>
             </div>
 
             <!-- Center Column (Featured latest news: show single latest post) -->
@@ -209,7 +214,11 @@ $locale = app()->getLocale();
                         <p>{{ __('site.no_party_news') }}</p>
                     </div>
                 @endif
-
+                <div class="text-center mt-4">
+                    <a href="{{ route('latest-news') }}" class="card-link" style="display: inline-block; padding: 12px 24px; background-color: #2563eb; color: white; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
+                        {{ __('site.view_all_news') }}
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -217,62 +226,62 @@ $locale = app()->getLocale();
         <div class="container">
             <div class="amaippai-quote-area">
                 <div class="amaippai-quote-left">
-                    <h2 class="amaippai-title animation-element slide-top">Amaippai Thiralvom</h2>
+                    <h2 class="amaippai-title animation-element slide-top">{{ __('site.amaippai_thiralvom.title') }}</h2>
 
                     <div class="amaippai-quote-block">
-                        <img src="{{ asset('assets/images/images/quote-icon.png') }}" alt="quote-icon">
+                        <img src="{{ asset('assets/images/images/quote-icon.png') }}" alt="quote-icon" loading="lazy" width="50" height="50">
                         <p class="amaippai-quote-text">
-                            Climate change is the greatest threat facing our planet today,
-                            and we must take urgent action to address it.
+                            {{ __('site.amaippai_thiralvom.quote') }}
                         </p>
                     </div>
 
-                    <p class="amaippai-author">Thol. Thirumavalavan</p>
+                    <p class="amaippai-author">{{ __('site.amaippai_thiralvom.author') }}</p>
                 </div>
 
                 <div class="amaippai-quote-right animation-element slide-right">
-                    <img src="{{ asset('assets/images/images/amaippai-thiralvom-right-img.png')}}" alt="Amaippai Thiralvom poster"
-                        class="amaippai-image" />
+                    <div class="amaippai-book-wrapper">
+                        <img src="{{ asset('assets/images/images/amaippai-thiralvom-right-img.png')}}" alt="Amaippai Thiralvom poster"
+                            class="amaippai-image" loading="lazy" />
+                        <div class="amaippai-img-overlay">
+                            <a href="{{ route('books') }}" class="amaippai-buy-btn">{{ __('site.books.buy_book') }}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="amaippai-news-row">
                 <div class="amaippai-news-card">
-                    <img src="{{ asset('assets/images/images/health.png') }}" alt="Plant based food" class="amaippai-news-img" />
+                    <img src="{{ asset('assets/images/images/star.png') }}" alt="Plant based food" class="amaippai-news-img" loading="lazy" />
                     <div class="amaippai-news-meta">
-                        <span class="amaippai-news-tag amaippai-health">Health</span>
                         <span class="amaippai-news-date">March 15, 2023</span>
-                        <h3 class="amaippai-news-title">The Rise of Plant-Based Diets: What You Need to Know</h3>
+                        <h3 class="amaippai-news-title">முதன்மை முரண்களை அடையாளம் காண்போம்! அவை மூலமாய்த் தோழமை சக்திகளை அறிவோம்!</h3>
                     </div>
 
                 </div>
 
                 <div class="amaippai-news-card">
-                    <img src="{{ asset('assets/images/images/entertainment.png') }}" alt="Spotify podcast" class="amaippai-news-img" />
+                    <img src="{{ asset('assets/images/images/star.png') }}" alt="Spotify podcast" class="amaippai-news-img" loading="lazy" />
                     <div class="amaippai-news-meta">
-                        <span class="amaippai-news-tag amaippai-entertainment">Entertainment</span>
                         <span class="amaippai-news-date">March 14, 2023</span>
-                        <h3 class="amaippai-news-title">Spotify Launches New Podcast Series on True Crime</h3>
+                        <h3 class="amaippai-news-title">முதன்மை அடிப்படை முரண்களை அறிவோம்! அவை மூலமாய்த் சனநாயக சக்திகளைத் தெரிவோம்!</h3>
                     </div>
 
                 </div>
 
                 <div class="amaippai-news-card">
-                    <img src="{{ asset('assets/images/images/politics.png') }}" alt="Infrastructure Bill" class="amaippai-news-img" />
+                    <img src="{{ asset('assets/images/images/star.png') }}" alt="Infrastructure Bill" class="amaippai-news-img" loading="lazy" />
                     <div class="amaippai-news-meta">
-                        <span class="amaippai-news-tag amaippai-politics">Politics</span>
                         <span class="amaippai-news-date">March 12, 2023</span>
-                        <h3 class="amaippai-news-title">State Congress Passes $1 Trillion Infrastructure Bill</h3>
+                        <h3 class="amaippai-news-title">முதன்மை அடிப்படை முரண்களை அறிவோம்! அவை மூலமாய்த் சனநாயக சக்திகளைத் தெரிவோம்!</h3>
                     </div>
 
                 </div>
 
                 <div class="amaippai-news-card">
-                    <img src="{{ asset('assets/images/images/health2.png') }}" alt="TikTok news" class="amaippai-news-img" />
+                    <img src="{{ asset('assets/images/images/star.png') }}" alt="TikTok news" class="amaippai-news-img" loading="lazy" />
                     <div class="amaippai-news-meta">
-                        <span class="amaippai-news-tag amaippai-health">Health</span>
                         <span class="amaippai-news-date">March 11, 2023</span>
-                        <h3 class="amaippai-news-title">TikTok Bans Weight Loss Ads and Promotions</h3>
+                        <h3 class="amaippai-news-title">முதன்மை அடிப்படை முரண்களை அறிவோம்! அவை மூலமாய்த் சனநாயக சக்திகளைத் தெரிவோம்!</h3>
                     </div>
 
                 </div>
@@ -351,31 +360,28 @@ $locale = app()->getLocale();
                     <div class="members-top-row">
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/thol-thirmavalavan.png') }}" alt="{{ __('site.home.member_1_name') }}">
+                                <img src="{{ asset('assets/images/images/thol-thirmavalavan.png') }}" alt="{{ __('site.home.member_1_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_1_name') }}</h6>
                                 <span>{{ __('site.home.member_1_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/thirumaofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/thirumaofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/thol.thirumaavalavan/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/raj-kumar.png') }}" alt="{{ __('site.home.member_2_name') }}">
+                                <img src="{{ asset('assets/images/images/raj-kumar.png') }}" alt="{{ __('site.home.member_2_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_2_name') }}</h6>
                                 <span>{{ __('site.home.member_2_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/WriterRavikumar" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/WriterRavikumar" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
@@ -383,61 +389,56 @@ $locale = app()->getLocale();
                     <div class="members-bottom-row">
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/sinthanai-selvan.png') }}" alt="{{ __('site.home.member_3_name') }}">
+                                <img src="{{ asset('assets/images/images/sinthanai-selvan.png') }}" alt="{{ __('site.home.member_3_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_3_name') }}</h6>
                                 <span>{{ __('site.home.member_3_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/SinthanaiVCKofficial" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/sinthanaivck" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/sinthanai_vck" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/aloor-shah-nawaz.png') }}" alt="{{ __('site.home.member_4_name') }}">
+                                <img src="{{ asset('assets/images/images/aloor-shah-nawaz.png') }}" alt="{{ __('site.home.member_4_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_4_name') }}</h6>
                                 <span>{{ __('site.home.member_4_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/aloor.shanavas" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/aloor_ShaNavas" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/aloor_sha_navas/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/panaiyur-babu.png') }}" alt="{{ __('site.home.member_5_name') }}">
+                                <img src="{{ asset('assets/images/images/panaiyur-babu.png') }}" alt="{{ __('site.home.member_5_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_5_name') }}</h6>
                                 <span>{{ __('site.home.member_5_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/panaiyurmbabu/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/PanaiyurBabu" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
+                                    <p><a href="https://www.instagram.com/panaiyurbabumla/" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="s-member-wrap">
                             <div class="member-img">
-                                <img src="{{ asset('assets/images/images/balaji.png') }}" alt="{{ __('site.home.member_6_name') }}">
+                                <img src="{{ asset('assets/images/images/balaji.png') }}" alt="{{ __('site.home.member_6_name') }}" loading="lazy">
                             </div>
                             <div class="member-cont">
                                 <h6 class="animation-element slide-top">{{ __('site.home.member_6_name') }}</h6>
                                 <span>{{ __('site.home.member_6_position') }}</span>
                                 <div class="members-s-media">
-                                    <p><a href=""><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/insta.png') }}" alt="instagram"></a></p>
-                                    <p><a href=""><img src="{{ asset('assets/images/images/yt.png') }}" alt="youtube"></a></p>
+                                    <p><a href="https://www.facebook.com/s.s.balaji" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/fb.png') }}" alt="facebook" loading="lazy"></a></p>
+                                    <p><a href="https://x.com/VckBalaji" target="_blank" rel="noopener noreferrer"><img src="{{ asset('assets/images/images/twitter.png') }}" alt="twitter" loading="lazy"></a></p>
                                 </div>
                             </div>
                         </div>
@@ -446,173 +447,247 @@ $locale = app()->getLocale();
             </div>
     </section>
     <section class="milestone-slider-section">
-        <h2 class="milestone-slider-title animation-element slide-top">Historic Milestones</h2>
+        <h2 class="milestone-slider-title animation-element slide-top">{{ __('site.history.milestones') }}</h2>
 
         <!-- Timeline navigation -->
         <div class="milestone-slider-years">
             <button class="milestone-slider-year active" data-slide="0">1972</button>
-            <button class="milestone-slider-year" data-slide="1">1982</button>
+            <button class="milestone-slider-year" data-slide="1">1990</button>
             <button class="milestone-slider-year" data-slide="2">1999</button>
-            <button class="milestone-slider-year" data-slide="3">2000</button>
-            <button class="milestone-slider-year" data-slide="4">2010</button>
-            <button class="milestone-slider-year" data-slide="5">2020</button>
+            <button class="milestone-slider-year" data-slide="3">2001</button>
+            <button class="milestone-slider-year" data-slide="4">2009</button>
+            <button class="milestone-slider-year" data-slide="5">2019</button>
+            <button class="milestone-slider-year" data-slide="6">2021</button>
+            <button class="milestone-slider-year" data-slide="7">2024</button>
         </div>
 
         <!-- Slider content -->
         <div class="milestone-slider-content">
             <div class="milestone-slider-item active">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="1972 leaders" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">The Beginning (1972)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.1972_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.1972_title') }}</h3>
                 <p class="milestone-slider-text">
-                    Started as Dalit Panthers in Maharashtra in 1972, bringing a new identity to India’s caste
-                    annihilation struggle. Later in 1982, Dalit Panther Iyakkkam (DPI) was established in Tamil
-                    Nadu by A. Malaiyachami. After his demise, Thol. Thirumavalavan took leadership of DPI.
+                    {{ __('site.history.1972_desc') }}
                 </p>
             </div>
 
             <div class="milestone-slider-item">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="1982 leaders" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">Formation of DPI (1982)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.1990_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.1990_title') }}</h3>
                 <p class="milestone-slider-text">
-                    In 1982, DPI was officially formed in Tamil Nadu, inspired by the Dalit Panthers movement of
-                    Maharashtra, continuing the fight for social justice and equality.
+                    {{ __('site.history.1990_desc') }}
                 </p>
             </div>
 
             <div class="milestone-slider-item">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="1999 event" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">Political Expansion (1999)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.1999_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.1999_title') }}</h3>
                 <p class="milestone-slider-text">
-                    DPI expanded its political presence in the late 1990s, focusing on empowering marginalized
-                    communities through active participation in democratic processes.
+                    {{ __('site.history.1999_desc') }}
                 </p>
             </div>
 
             <div class="milestone-slider-item">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="2000 event" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">National Voice (2000)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.2001_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.2001_title') }}</h3>
                 <p class="milestone-slider-text">
-                    Under Thol. Thirumavalavan’s leadership, the movement gained national attention, advocating
-                    for Dalit rights across India.
+                    {{ __('site.history.2001_desc') }}
                 </p>
             </div>
 
             <div class="milestone-slider-item">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="2010 event" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">Continued Activism (2010)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.2009_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.2009_title') }}</h3>
                 <p class="milestone-slider-text">
-                    The organization continued to champion human rights, focusing on education, representation,
-                    and social justice for oppressed communities.
+                    {{ __('site.history.2009_desc') }}
                 </p>
             </div>
 
             <div class="milestone-slider-item">
-                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="2020 event" class="milestone-slider-image" />
-                <h3 class="milestone-slider-caption">Modern Era (2020)</h3>
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.2019_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.2019_title') }}</h3>
                 <p class="milestone-slider-text">
-                    DPI remains a strong voice for equality, adapting to modern challenges and inspiring future
-                    generations.
+                    {{ __('site.history.2019_desc') }}
                 </p>
             </div>
+
+            <div class="milestone-slider-item">
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.2021_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.2021_title') }}</h3>
+                <p class="milestone-slider-text">
+                    {{ __('site.history.2021_desc') }}
+                </p>
+            </div>
+
+            <div class="milestone-slider-item">
+                <img src="{{ asset('assets/images/images/milestone-img1.png') }}" alt="{{ __('site.history.2024_title') }}" class="milestone-slider-image" loading="lazy" />
+                <h3 class="milestone-slider-caption">{{ __('site.history.2024_title') }}</h3>
+                <p class="milestone-slider-text">
+                    {{ __('site.history.2024_desc') }}
+                </p>
+            </div>
+
         </div>
     </section>
     <section class="exclusive-section">
         <div class="container">
-          <!-- LEFT FEATURED VIDEO -->
-          <div class="featured">
-            <iframe id="mainVideo" width="100%" height="580"
-              src="https://www.youtube.com/embed/olSa0Kb_40Q?rel=0"
-              title="YouTube video player" frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-            <div class="tag">Exclusive Interviews</div>
-          </div>
+          @php
+            $locale = app()->getLocale();
+            $exclusiveInterviews = isset($exclusiveInterviews) ? $exclusiveInterviews : collect();
+            
+            // Function to convert any YouTube URL format to embed URL
+            $convertToEmbedUrl = function($url) {
+                if (empty($url)) return null;
+                
+                // If already an embed URL, return as is (with rel=0 if not present)
+                if (strpos($url, 'youtube.com/embed') !== false) {
+                    return strpos($url, 'rel=') === false ? $url . (strpos($url, '?') !== false ? '&' : '?') . 'rel=0' : $url;
+                }
+                
+                // Extract video ID from various YouTube URL formats
+                $videoId = null;
+                if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $url, $matches)) {
+                    $videoId = $matches[1];
+                } elseif (preg_match('/^[a-zA-Z0-9_-]{11}$/', $url)) {
+                    // If it's just a video ID
+                    $videoId = $url;
+                }
+                
+                // Convert to embed URL
+                return $videoId ? "https://www.youtube.com/embed/{$videoId}?rel=0" : null;
+            };
+            
+            // Function to get YouTube thumbnail from video link
+            $getThumbnailUrl = function($url) {
+                if (empty($url)) return null;
+                
+                $videoId = null;
+                if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $url, $matches)) {
+                    $videoId = $matches[1];
+                } elseif (preg_match('/^[a-zA-Z0-9_-]{11}$/', $url)) {
+                    $videoId = $url;
+                }
+                
+                return $videoId ? "https://img.youtube.com/vi/{$videoId}/hqdefault.jpg" : null;
+            };
+            
+            $featuredInterview = $exclusiveInterviews->first();
+            $sidebarInterviews = $exclusiveInterviews->skip(1)->take(4);
+          @endphp
+          
+          @if($featuredInterview && $featuredInterview->video_link)
+            @php
+              $embedUrl = $convertToEmbedUrl($featuredInterview->video_link);
+              $featuredTitle = $locale === 'ta' ? ($featuredInterview->title_ta ?? $featuredInterview->title_en) : ($featuredInterview->title_en ?? $featuredInterview->title_ta);
+            @endphp
+            <!-- LEFT FEATURED VIDEO -->
+            <div class="featured">
+              @if($embedUrl)
+                <iframe id="mainVideo" width="100%" height="580"
+                  data-src="{{ $embedUrl }}"
+                  title="{{ $featuredTitle }}" frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"></iframe>
+              @else
+                <div style="width: 100%; height: 580px; background: #000; display: flex; align-items: center; justify-content: center; color: white;">
+                  <p>Video not available</p>
+                </div>
+              @endif
+              <div class="tag">{{ __('site.menu.interviews') }}</div>
+            </div>
+          @else
+            <!-- PLACEHOLDER IF NO INTERVIEWS -->
+            <div class="featured">
+              <div style="width: 100%; height: 580px; background: #000; display: flex; align-items: center; justify-content: center; color: white;">
+                <p>{{ __('site.videos.no_videos') }}</p>
+              </div>
+              <div class="tag">{{ __('site.menu.interviews') }}</div>
+            </div>
+          @endif
         
           <!-- RIGHT SIDEBAR -->
           <div class="sidebar">
-            <div class="side-item" data-video="https://www.youtube.com/embed/LU33WW200zk?
-            <div class="side-item" data-video="https://www.youtube.com/embed/LU33WW200zk?rel=0">
-              <img src="https://img.youtube.com/vi/LU33WW200zk/hqdefault.jpg" alt="">
-              <p>Behind the Scenes of the Making of the Latest Zoom Movie</p>
-            </div>
-        
-            <div class="side-item" data-video="https://www.youtube.com/embed/T7oK3r18LQI?rel=0">
-              <img src="https://img.youtube.com/vi/T7oK3r18LQI/hqdefault.jpg" alt="">
-              <p>The Future of Artificial Intelligence: Experts Weigh In</p>
-            </div>
-        
-            <div class="side-item" data-video="https://www.youtube.com/embed/JqNr9-axBSk?rel=0">
-              <img src="https://img.youtube.com/vi/JqNr9-axBSk/hqdefault.jpg" alt="">
-              <p>The Rise of Esports & A Look at the World’s Biggest Gaming Tournaments</p>
-            </div>
-        
-            <div class="side-item" data-video="https://www.youtube.com/embed/JKoKhLbOhxU?rel=0">
-              <img src="https://img.youtube.com/vi/JKoKhLbOhxU/hqdefault.jpg" alt="">
-              <p>How to Succeed as a Startup: Advice from Successful Entrepreneurs</p>
-            </div>
+            @forelse($sidebarInterviews as $interview)
+              @if($interview->video_link)
+                @php
+                  $embedUrl = $convertToEmbedUrl($interview->video_link);
+                  $title = $locale === 'ta' ? ($interview->title_ta ?? $interview->title_en) : ($interview->title_en ?? $interview->title_ta);
+                  $thumbnailUrl = $getThumbnailUrl($interview->video_link);
+                @endphp
+                @if($embedUrl && $thumbnailUrl)
+                  <div class="side-item" data-video="{{ $embedUrl }}">
+                    <img src="{{ $thumbnailUrl }}" alt="{{ $title }}" loading="lazy">
+                    <p>{{ $title }}</p>
+                  </div>
+                @endif
+              @endif
+            @empty
+              <div class="side-item">
+                <p>{{ __('site.videos.no_videos') }}</p>
+              </div>
+            @endforelse
           </div>
         </div>
     </section>
     <section class="orgsec-container">
+        <div class="container">
+            <h2 class="orgsec-title">{{ __('site.color_symbolism.title') }}</h2>
 
-        <h2 class="orgsec-title">Our Colors, Our identity, Our Struggle</h2>
-
-        @php
-    $locale = app()->getLocale();
-    @endphp
-        <div class="orgsec-card-wrapper">
+            <div class="orgsec-card-wrapper">
 
             <div class="orgsec-card">
-                <img src="{{ asset('assets/images/images/blue.png') }}" class="orgsec-icon" alt="{{ $locale === 'ta' ? 'நீலம்' : 'Blue' }}">
-                <h3 class="orgsec-card-title animation-element slide-top">{{ $locale === 'ta' ? 'நீலம்' : 'Blue' }}</h3>
-                <p class="orgsec-desc">{{ $locale === 'ta'
-                    ? 'உழைக்கும் மக்கள் விடுதலை'
-                    : 'Working Peoples Liberation' }}</p>
+                <img src="{{ asset('assets/images/images/blue.png') }}" class="orgsec-icon" alt="{{ __('site.color_symbolism.blue_title') }}" loading="lazy">
+                <h3 class="orgsec-card-title animation-element slide-top">{{ __('site.color_symbolism.blue_title') }}</h3>
+                <p class="orgsec-desc">{{ __('site.color_symbolism.blue_meaning') }} - {{ __('site.color_symbolism.blue_subtitle') }}</p>
             </div>
 
             <div class="orgsec-card">
-                <img src="{{ asset('assets/images/images/red.png') }}" class="orgsec-icon" alt="{{ $locale === 'ta' ? 'சிவப்பு' : 'Red' }}">
-                <h3 class="orgsec-card-title animation-element slide-top">{{ $locale === 'ta' ? 'சிவப்பு' : 'Red' }}</h3>
-                <p class="orgsec-desc">{{ $locale === 'ta'
-                    ? 'புரட்சிகரப் பாதை'
-                    : 'Revolutionary Path' }}</p>
+                <img src="{{ asset('assets/images/images/red.png') }}" class="orgsec-icon" alt="{{ __('site.color_symbolism.red_title') }}" loading="lazy">
+                <h3 class="orgsec-card-title animation-element slide-top">{{ __('site.color_symbolism.red_title') }}</h3>
+                <p class="orgsec-desc">{{ __('site.color_symbolism.red_meaning') }} - {{ __('site.color_symbolism.red_subtitle') }}</p>
             </div>
 
             <div class="orgsec-card">
-                <img src="{{ asset('assets/images/images/star.png') }}" class="orgsec-icon" alt="{{ $locale === 'ta' ? 'நட்சத்திரம்' : 'Star' }}">
-                <h3 class="orgsec-card-title animation-element slide-top">{{ $locale === 'ta' ? 'நட்சத்திரம்' : 'Star' }}</h3>
-                <p class="orgsec-desc">{{ $locale === 'ta'
-                    ? 'விடிவெள்ளி'
-                    : 'Morning Star' }}</p>
+                <img src="{{ asset('assets/images/images/star.png') }}" class="orgsec-icon" alt="{{ __('site.color_symbolism.star_title') }}" loading="lazy">
+                <h3 class="orgsec-card-title animation-element slide-top">{{ __('site.color_symbolism.star_title') }}</h3>
+                <p class="orgsec-desc">{{ __('site.color_symbolism.star_meaning') }} - {{ __('site.color_symbolism.star_subtitle') }}</p>
             </div>
 
             <div class="orgsec-card">
-                <img src="{{ asset('assets/images/images/tiger.png') }}" class="orgsec-icon" alt="{{ $locale === 'ta' ? 'புலி' : 'Tiger' }}">
-                <h3 class="orgsec-card-title animation-element slide-top">{{ $locale === 'ta' ? 'சிறுத்தை' : 'Leopard' }}</h3>
-                <p class="orgsec-desc">{{ $locale === 'ta'
-                    ? 'விடுதலைப் போராளி'
-                    : 'Freedom Fighter' }}</p>
+                <img src="{{ asset('assets/images/images/tiger.png') }}" class="orgsec-icon" alt="{{ __('site.color_symbolism.panther_title') }}" loading="lazy">
+                <h3 class="orgsec-card-title animation-element slide-top">{{ __('site.color_symbolism.panther_title') }}</h3>
+                <p class="orgsec-desc">{{ __('site.color_symbolism.panther_meaning') }} - {{ __('site.color_symbolism.panther_subtitle') }}</p>
             </div>
         </div>
 
-        <h2 class="orgsec-subtitle">ORGANIZATION STRUCTURE</h2>
+        <h2 class="orgsec-subtitle">{{ __('site.color_symbolism.organization_structure') }}</h2>
 
         <div class="orgsec-tabs">
-            <div class="orgsec-tab orgsec-blue">LEADERSHIP</div>
-            <div class="orgsec-tab orgsec-red">DISTRICT SECRETARIES</div>
-            <div class="orgsec-tab orgsec-blue orgsec-active">COMMITTEE MEMBERS</div>
-            <div class="orgsec-tab orgsec-red">PARTY WINGS</div>
+            <div class="orgsec-tab orgsec-blue">{{ __('site.color_symbolism.leadership') }}</div>
+            <div class="orgsec-tab orgsec-red">{{ __('site.color_symbolism.district_secretaries') }}</div>
+            <div class="orgsec-tab orgsec-blue orgsec-active">{{ __('site.color_symbolism.committee_members') }}</div>
+            <div class="orgsec-tab orgsec-red">{{ __('site.color_symbolism.party_wings') }}</div>
         </div>
 
-        <div class="orgsec-icons">
-            <div class="orgsec-tab orgsec-blue">LEADERSHIP</div>
-            <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/leadership.png') }}" alt="LEADERSHIP">
-            <div class="orgsec-tab orgsec-red">DISTRICT SECRETARIES</div>
-            <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/secratary.png') }}" alt="DISTRICT SECRETARIE">
-            <div class="orgsec-tab orgsec-blue orgsec-active">COMMITTEE MEMBERS</div>
-            <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/commitee-members.png') }}" alt="COMMITTEE MEMBERS">
-            <div class="orgsec-tab orgsec-red">PARTY WINGS</div>
-            <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/party-wings.png') }}" alt="PARTY WINGS">
+            <div class="orgsec-icons">
+            <div class="orgsec-tab orgsec-blue">{{ __('site.color_symbolism.leadership') }}</div>
+            <a href="{{ route('leadership') }}">
+                <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/leadership.png') }}" alt="{{ __('site.color_symbolism.leadership') }}" loading="lazy">
+            </a>
+            <div class="orgsec-tab orgsec-red">{{ __('site.color_symbolism.district_secretaries') }}</div>
+            <a href="{{ route('party-representatives') }}">
+                <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/secratary.png') }}" alt="{{ __('site.color_symbolism.district_secretaries') }}" loading="lazy">
+            </a>
+            <div class="orgsec-tab orgsec-blue orgsec-active">{{ __('site.color_symbolism.committee_members') }}</div>
+            <a href="{{ route('office-bearers') }}">
+                <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/commitee-members.png') }}" alt="{{ __('site.color_symbolism.committee_members') }}" loading="lazy">
+            </a>
+            <div class="orgsec-tab orgsec-red">{{ __('site.color_symbolism.party_wings') }}</div>
+            <a href="{{ route('party-wings') }}">
+                <img class="animation-element slide-bottom" src="{{ asset('assets/images/images/party-wings.png') }}" alt="{{ __('site.color_symbolism.party_wings') }}" loading="lazy">
+            </a>
+        </div>
         </div>
 
     </section>
@@ -631,36 +706,36 @@ $locale = app()->getLocale();
             <!-- EVENTS TAB -->
             <div class="gallerysec-content gallerysec-show" id="events">
                 <div class="grid-container">
-                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1">
-                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2">
-                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3">
-                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4">
-                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5">
-                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6">
+                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1" loading="lazy">
+                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2" loading="lazy">
+                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3" loading="lazy">
+                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4" loading="lazy">
+                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5" loading="lazy">
+                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6" loading="lazy">
                 </div>
             </div>
 
              <!--PARTY TAB -->
             <div class="gallerysec-content gallerysec-show" id="party">
                 <div class="grid-container">
-                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1">
-                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2">
-                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3">
-                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4">
-                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5">
-                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6">
+                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1" loading="lazy">
+                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2" loading="lazy">
+                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3" loading="lazy">
+                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4" loading="lazy">
+                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5" loading="lazy">
+                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6" loading="lazy">
                 </div>
             </div>
 
              <!--THIRU TAB -->
             <div class="gallerysec-content gallerysec-show" id="thiru">
                 <div class="grid-container">
-                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1">
-                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2">
-                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3">
-                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4">
-                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5">
-                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6">
+                    <img class="grid-item grid6" src="{{ asset('assets/images/images/gallery-img1.png') }}" alt="gallery-img1" loading="lazy">
+                    <img class="grid-item grid5" src="{{ asset('assets/images/images/gallery-img2.png') }}" alt="gallery-img2" loading="lazy">
+                    <img class="grid-item grid4" src="{{ asset('assets/images/images/gallery-img3.png') }}" alt="gallery-img3" loading="lazy">
+                    <img class="grid-item grid3" src="{{ asset('assets/images/images/gallery-img4.png') }}" alt="gallery-img4" loading="lazy">
+                    <img class="grid-item grid2" src="{{ asset('assets/images/images/gallery-img5.png') }}" alt="gallery-img5" loading="lazy">
+                    <img class="grid-item grid1" src="{{ asset('assets/images/images/gallery-img6.png') }}" alt="gallery-img6" loading="lazy">
                 </div>
             </div>
         </div>
@@ -669,17 +744,12 @@ $locale = app()->getLocale();
     <section class="ytabs-container">
 
         <div class="container">
-            <div class="ytabs-tabs">
-                <div class="ytabs-tab ytabs-active" data-target="ytabs-yt">VCK Youtube</div>
-                <div class="ytabs-tab" data-target="ytabs-vtv">Velicham Tv</div>
-                <div class="ytabs-tab" data-target="ytabs-kal">Kalathi Chiruthaikal</div>
-                <div class="ytabs-tab" data-target="ytabs-press">Thirumavalavan Press Meet</div>
-            </div>
-
-            <!-- VCK YouTube Tab: Dynamic Video Gallery -->
             @php
                 $locale = app()->getLocale();
                 $videoGallery = isset($videoGallery) ? $videoGallery : collect();
+                $velichamTvGallery = isset($velichamTvGallery) ? $velichamTvGallery : collect();
+                $kalathiGallery = isset($kalathiGallery) ? $kalathiGallery : collect();
+                $pressMeetGallery = isset($pressMeetGallery) ? $pressMeetGallery : collect();
                 $getYoutubeId = function($url) {
                     if (empty($url)) return null;
                     if (preg_match('/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]+)/', $url, $m)) {
@@ -691,6 +761,14 @@ $locale = app()->getLocale();
                     return null;
                 };
             @endphp
+            <div class="ytabs-tabs">
+                <div class="ytabs-tab ytabs-active" data-target="ytabs-yt">VCK Youtube</div>
+                <div class="ytabs-tab" data-target="ytabs-vtv">Velicham Tv</div>
+                <div class="ytabs-tab" data-target="ytabs-kal">Kalathi Chiruthaikal</div>
+                <div class="ytabs-tab" data-target="ytabs-press">Thirumavalavan Press Meet</div>
+            </div>
+
+            <!-- VCK YouTube Tab: Dynamic Video Gallery -->
             <div class="ytabs-slider ytabs-show" id="ytabs-yt">
                 <div class="ytabs-track">
                     @forelse($videoGallery as $video)
@@ -700,9 +778,9 @@ $locale = app()->getLocale();
                             $embedUrl = $ytId ? "https://www.youtube.com/embed/{$ytId}?rel=0" : null;
                         @endphp
                         @if($embedUrl)
-                            <iframe width="360" height="215" src="{{ $embedUrl }}" title="{{ $title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin:8px 0;"></iframe>
+                            <iframe width="360" height="215" data-src="{{ $embedUrl }}" title="{{ $title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin:8px 0;" loading="lazy"></iframe>
                         @else
-                            <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="{{ $title }}" style="object-fit: cover;">
+                            <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="{{ $title }}" style="object-fit: cover;" loading="lazy">
                         @endif
                     @empty
                         <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="yt1">
@@ -715,32 +793,71 @@ $locale = app()->getLocale();
                 <div class="ytabs-next">›</div>
             </div>
 
-            <!-- Velicham TV -->
+            <!-- Velicham TV Tab: Dynamic Video Gallery -->
             <div class="ytabs-slider" id="ytabs-vtv">
                 <div class="ytabs-track">
-                    <img src="v1.jpg" alt="">
-                    <img src="v2.jpg" alt="">
-                    <img src="v3.jpg" alt="">
+                    @forelse($velichamTvGallery as $video)
+                        @php
+                            $ytId = $getYoutubeId($video->video_link ?? '');
+                            $title = $locale === 'ta' ? ($video->title_ta ?? $video->title_en) : ($video->title_en ?? $video->title_ta);
+                            $embedUrl = $ytId ? "https://www.youtube.com/embed/{$ytId}?rel=0" : null;
+                        @endphp
+                        @if($embedUrl)
+                            <iframe width="360" height="215" data-src="{{ $embedUrl }}" title="{{ $title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin:8px 0;" loading="lazy"></iframe>
+                        @else
+                            <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="{{ $title }}" style="object-fit: cover;" loading="lazy">
+                        @endif
+                    @empty
+                        <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="yt1">
+                        <img src="{{ asset('assets/images/images/vck-yt2.png') }}" alt="yt2">
+                        <img src="{{ asset('assets/images/images/vck-yt3.png') }}" alt="yt3">
+                    @endforelse
                 </div>
                 <div class="ytabs-next">›</div>
             </div>
 
-            <!-- Kalathi -->
+            <!-- Kalathi Chiruthaikal Tab: Dynamic Video Gallery -->
             <div class="ytabs-slider" id="ytabs-kal">
                 <div class="ytabs-track">
-                    <img src="k1.jpg" alt="">
-                    <img src="k2.jpg" alt="">
-                    <img src="k3.jpg" alt="">
+                    @forelse($kalathiGallery as $video)
+                        @php
+                            $ytId = $getYoutubeId($video->video_link ?? '');
+                            $title = $locale === 'ta' ? ($video->title_ta ?? $video->title_en) : ($video->title_en ?? $video->title_ta);
+                            $embedUrl = $ytId ? "https://www.youtube.com/embed/{$ytId}?rel=0" : null;
+                        @endphp
+                        @if($embedUrl)
+                            <iframe width="360" height="215" data-src="{{ $embedUrl }}" title="{{ $title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin:8px 0;" loading="lazy"></iframe>
+                        @else
+                            <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="{{ $title }}" style="object-fit: cover;" loading="lazy">
+                        @endif
+                    @empty
+                        <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="yt1">
+                        <img src="{{ asset('assets/images/images/vck-yt2.png') }}" alt="yt2">
+                        <img src="{{ asset('assets/images/images/vck-yt3.png') }}" alt="yt3">
+                    @endforelse
                 </div>
                 <div class="ytabs-next">›</div>
             </div>
 
-            <!-- Press -->
+            <!-- Thirumavalavan Press Meet Tab: Dynamic Video Gallery -->
             <div class="ytabs-slider" id="ytabs-press">
                 <div class="ytabs-track">
-                    <img src="p1.jpg" alt="">
-                    <img src="p2.jpg" alt="">
-                    <img src="p3.jpg" alt="">
+                    @forelse($pressMeetGallery as $video)
+                        @php
+                            $ytId = $getYoutubeId($video->video_link ?? '');
+                            $title = $locale === 'ta' ? ($video->title_ta ?? $video->title_en) : ($video->title_en ?? $video->title_ta);
+                            $embedUrl = $ytId ? "https://www.youtube.com/embed/{$ytId}?rel=0" : null;
+                        @endphp
+                        @if($embedUrl)
+                            <iframe width="360" height="215" data-src="{{ $embedUrl }}" title="{{ $title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="margin:8px 0;" loading="lazy"></iframe>
+                        @else
+                            <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="{{ $title }}" style="object-fit: cover;" loading="lazy">
+                        @endif
+                    @empty
+                        <img src="{{ asset('assets/images/images/vck-yt1.png') }}" alt="yt1">
+                        <img src="{{ asset('assets/images/images/vck-yt2.png') }}" alt="yt2">
+                        <img src="{{ asset('assets/images/images/vck-yt3.png') }}" alt="yt3">
+                    @endforelse
                 </div>
                 <div class="ytabs-next">›</div>
             </div>
@@ -1215,34 +1332,96 @@ $locale = app()->getLocale();
             });
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- Defer jQuery and lazy load YouTube iframes --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
     <script>
-        $(document).ready(function () {
-          var $animationElements = $(".animation-element");
-          var $window = $(window);
-        
-          function checkIfInView() {
-            var windowHeight = $window.height();
-            var windowTop = $window.scrollTop();
-            var windowBottom = windowTop + windowHeight;
-        
-            $.each($animationElements, function () {
-              var $element = $(this);
-              var elementHeight = $element.outerHeight();
-              var elementTop = $element.offset().top;
-              var elementBottom = elementTop + elementHeight;
-        
-              if (elementBottom >= windowTop && elementTop <= windowBottom) {
-                $element.addClass("in-view");
-              } 
-              // else {
-              //   $element.removeClass("in-view");
-              // }
+        // Load YouTube iframes only when visible or clicked
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lazy load YouTube iframes
+            function loadYouTubeIframes() {
+                const iframes = document.querySelectorAll('iframe[data-src]');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const iframe = entry.target;
+                            if (iframe.dataset.src) {
+                                iframe.src = iframe.dataset.src;
+                                iframe.removeAttribute('data-src');
+                            }
+                            observer.unobserve(iframe);
+                        }
+                    });
+                }, { rootMargin: '50px' });
+                
+                iframes.forEach(iframe => observer.observe(iframe));
+            }
+            
+            // Load main video when section is visible
+            const mainVideo = document.getElementById('mainVideo');
+            if (mainVideo && mainVideo.dataset.src) {
+                const videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && mainVideo.dataset.src) {
+                            mainVideo.src = mainVideo.dataset.src;
+                            mainVideo.removeAttribute('data-src');
+                            videoObserver.unobserve(mainVideo);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+                videoObserver.observe(mainVideo);
+            }
+            
+            // Load iframes in video gallery tabs when they become visible
+            const videoTabs = document.querySelectorAll('.ytabs-tab');
+            videoTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const targetSlider = document.getElementById(targetId);
+                    if (targetSlider) {
+                        setTimeout(() => {
+                            const iframes = targetSlider.querySelectorAll('iframe[data-src]');
+                            iframes.forEach(iframe => {
+                                if (iframe.dataset.src) {
+                                    iframe.src = iframe.dataset.src;
+                                    iframe.removeAttribute('data-src');
+                                }
+                            });
+                        }, 100);
+                    }
+                });
             });
-          }
+            
+            loadYouTubeIframes();
+        });
         
-          $window.on("scroll resize", checkIfInView);
-          $window.trigger("scroll");
+        // Animation elements check - defer until jQuery loads
+        window.addEventListener('load', function() {
+            if (typeof jQuery !== 'undefined') {
+                jQuery(document).ready(function () {
+                  var $animationElements = jQuery(".animation-element");
+                  var $window = jQuery(window);
+                
+                  function checkIfInView() {
+                    var windowHeight = $window.height();
+                    var windowTop = $window.scrollTop();
+                    var windowBottom = windowTop + windowHeight;
+                
+                    jQuery.each($animationElements, function () {
+                      var $element = jQuery(this);
+                      var elementHeight = $element.outerHeight();
+                      var elementTop = $element.offset().top;
+                      var elementBottom = elementTop + elementHeight;
+                
+                      if (elementBottom >= windowTop && elementTop <= windowBottom) {
+                        $element.addClass("in-view");
+                      }
+                    });
+                  }
+                
+                  $window.on("scroll resize", checkIfInView);
+                  $window.trigger("scroll");
+                });
+            }
         });
     </script>
     <script>
@@ -1335,17 +1514,51 @@ $locale = app()->getLocale();
             });
         });
 
-        // Slider scroll
+        // Slider scroll and lazy load iframes
         ySliders.forEach(slider => {
             const track = slider.querySelector(".ytabs-track");
             const btn = slider.querySelector(".ytabs-next");
             let x = 0;
+
+            // Load iframes when tab becomes visible
+            function loadIframesInSlider() {
+                const iframes = track.querySelectorAll('iframe[data-src]');
+                iframes.forEach(iframe => {
+                    if (iframe.dataset.src) {
+                        iframe.src = iframe.dataset.src;
+                        iframe.removeAttribute('data-src');
+                    }
+                });
+            }
 
             btn.addEventListener("click", () => {
                 const maxScroll = track.scrollWidth - slider.clientWidth;
                 x += 300;
                 if (x > maxScroll) x = 0;
                 track.style.transform = `translateX(-${x}px)`;
+            });
+            
+            // Load iframes when slider becomes visible
+            if (slider.classList.contains('ytabs-show')) {
+                loadIframesInSlider();
+            }
+        });
+        
+        // Load iframes when tab is clicked
+        yTabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const targetSlider = document.getElementById(tab.dataset.target);
+                if (targetSlider) {
+                    setTimeout(() => {
+                        const iframes = targetSlider.querySelectorAll('iframe[data-src]');
+                        iframes.forEach(iframe => {
+                            if (iframe.dataset.src) {
+                                iframe.src = iframe.dataset.src;
+                                iframe.removeAttribute('data-src');
+                            }
+                        });
+                    }, 100);
+                }
             });
         });
 

@@ -23,20 +23,21 @@
                     <div class="footer-right">
                         <div class="footer-column">
                             <div class="footer-column-inner">
-                                <h4>Services</h4>
+                                <h4>{{ __('site.menu.party') }}</h4>
                                 <ul>
-                                    <li><a href="#"><span>✔</span> About</a></li>
-                                    <li><a href="#"><span>✔</span> District Secretaries</a></li>
-                                    <li><a href="#"><span>✔</span> Party Wings</a></li>
-                                    <li><a href="#"><span>✔</span> Press Release</a></li>
+                                    <li><a href="{{ route('leadership') }}"><span>✔</span> {{ __('site.menu.leadership') }}</a></li>
+                                    <li><a href="{{ route('party-wings') }}"><span>✔</span> {{ __('site.color_symbolism.party_wings') }}</a></li>
+                                    <li><a href="{{ route('press-releases') }}"><span>✔</span> {{ __('site.menu.press_release') }}</a></li>
+                                    <li><a href="{{ route('elected-members') }}"><span>✔</span> {{ __('site.menu.elected_members') }}</a></li>
                                 </ul>
                             </div>
                             <div class="footer-column-inner">
-                                <h4>Links</h4>
+                                <h4>{{ __('site.footer.quick_links') }}</h4>
                                 <ul>
-                                    <li><a href="#"><span>✔</span> Join Vck</a></li>
-                                    <li><a href="#"><span>✔</span> Donate</a></li>
-                                    <li><a href="#"><span>✔</span> Application Form</a></li>
+                                    <li><a href="{{ route('join') }}"><span>✔</span> {{ __('site.menu.join_vck') }}</a></li>
+                                    <li><a href="{{ route('donation') }}"><span>✔</span> {{ __('site.menu.donations') }}</a></li>
+                                    <li><a href="{{ route('applications') }}"><span>✔</span> {{ __('site.menu.applications') }}</a></li>
+                                    <li><a href="{{ route('contact') }}"><span>✔</span> {{ __('site.menu.contact') }}</a></li>
                                 </ul>
                             </div>
                         </div>

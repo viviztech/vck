@@ -139,14 +139,14 @@
              @if($press_releases->isNotEmpty())
             <div x-show="activeTab === 1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 @foreach($press_releases as $press_release)
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden video-card">
                     <img src="{{ $press_release->featured_image }}" alt="Recent News 1" class="w-full h-48 object-cover">
                     <div class="p-4">
-                        <h3 class="text-lg sm:text-xl font-bold tamil text-blue-600 mb-2">{{ $press_release->title_ta }}</h3>
-                        <!-- <p class="tamil text-sm text-gray-700 mb-3">{{ $latest_new->featured_image }}</p> -->
+                        <h3 class="text-lg sm:text-xl font-bold tamil text-red-600 mb-2">{{ $press_release->title_ta }}</h3>
+                        <p class="tamil text-sm text-gray-700 mb-3"></p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">{{ $press_release->event_date ? $press_release->event_date->format('d-M-Y') : 'N/A' }}</span>
-                            <a href="{{ $latest_new->slug }}" class="bg-blue-600 text-white px-4 py-2 rounded tamil text-sm hover:bg-red-700 transition">Read more</a>
+                            <a href="{{ $press_release->slug }}" class="bg-blue-600 text-white px-4 py-2 rounded tamil text-sm hover:bg-red-700 transition">Read more</a>
                         </div>
                     </div>
                 </div>
@@ -158,11 +158,11 @@
              @if($events->isNotEmpty())
             <div x-show="activeTab === 2" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 @foreach($events as $event)
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden video-card">
                     <img src="{{ $event->featured_image }}" alt="Special News 1" class="w-full h-48 object-cover">
                     <div class="p-4">
                         <h3 class="text-lg sm:text-xl font-bold tamil text-red-600 mb-2">{{ $event->title_ta }}</h3>
-                        <!-- <p class="tamil text-sm text-gray-700 mb-3">{{ __('site.home.news_4_desc') ?: 'செய்தி 4 விவரம் இங்கே வரும்' }}</p> -->
+                        <p class="tamil text-sm text-gray-700 mb-3"></p>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">{{ $event->event_date ? $event->event_date->format('d-M-Y') : 'N/A' }}</span>
                             <a href="{{ $event->slug }}" class="bg-blue-600 text-white px-4 py-2 rounded tamil text-sm hover:bg-red-700 transition">Read more</a>

@@ -45,7 +45,7 @@
           <div id="party-menu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-20">
                         <a href="{{ route('ideology') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('ideology') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.ideology') }}</a>
             <a href="{{ route('history') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('history') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.history') }}</a>
-            <a href="{{ route('administration') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('administration') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.administration') }}</a>
+            <a href="{{ route('leadership') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('leadership') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.leadership') }}</a>
             <a href="{{ route('elected-members') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('elected-members') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.elected_members') }}</a>
             <a href="{{ route('office-bearers') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('office-bearers') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.office_bearers') }}</a>
             <a href="{{ route('party-representatives') }}" class="block px-4 py-2 hover:bg-gray-100 {{ Request::routeIs('party-representatives') ? 'bg-blue-50 font-bold' : '' }}">{{ __('site.menu.party_representatives') }}</a>
@@ -142,7 +142,7 @@
             <ul id="mobile-party-menu" class="ml-4 mt-2 space-y-1 hidden">
               <li><a href="{{ route('ideology') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.ideology') }}</a></li>
               <li><a href="{{ route('history') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.history') }}</a></li>
-              <li><a href="{{ route('administration') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.administration') }}</a></li>
+              <li><a href="{{ route('leadership') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.leadership') }}</a></li>
               <li><a href="{{ route('elected-members') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.elected_members') }}</a></li>
               <li><a href="{{ route('office-bearers') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.office_bearers') }}</a></li>
               <li><a href="{{ route('party-representatives') }}" class="block py-2 px-3 text-sm hover:bg-gray-100">{{ __('site.menu.party_representatives') }}</a></li>

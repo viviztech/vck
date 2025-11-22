@@ -65,7 +65,7 @@
                 $partyMenuItems = [
                     ['route' => 'ideology', 'label' => 'site.menu.ideology'],
                     ['route' => 'history', 'label' => 'site.menu.history'],
-                    ['route' => 'administration', 'label' => 'site.menu.administration'],
+                    ['route' => 'leadership', 'label' => 'site.menu.leadership'],
                     ['route' => 'elected-members', 'label' => 'site.menu.elected_members'],
                     ['route' => 'office-bearers', 'label' => 'site.menu.office_bearers'],
                     ['route' => 'party-representatives', 'label' => 'site.menu.party_representatives'],

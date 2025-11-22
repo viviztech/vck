@@ -87,8 +87,11 @@ class MembersTable
                     ->label('Download ID Card')
                     ->icon('heroicon-o-credit-card')
                     ->color('success')
-                    ->url(fn (Member $record) => route('members.idcard.download', ['member' => $record->id, 'type' => 'full']))
+                    ->url('#')
                     ->openUrlInNewTab(false)
+                    ->extraAttributes(fn (Member $record) => [
+                        'onclick' => "event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation(); const url = '" . route('members.idcard.download', ['member' => $record->id, 'type' => 'full']) . "'; const filename = 'member-id-card-{$record->id}-full.pdf'; const link = document.createElement('a'); link.href = url; link.download = filename; link.style.display = 'none'; document.body.appendChild(link); link.click(); setTimeout(() => document.body.removeChild(link), 100); return false;",
+                    ])
                     ->tooltip('Download member ID card'),
             ])
             ->toolbarActions([

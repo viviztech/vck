@@ -32,11 +32,6 @@ class BooksTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('category')
-                    ->label('வகை')
-                    ->searchable()
-                    ->sortable(),
-
                 IconColumn::make('is_active')
                     ->label('செயலில்')
                     ->boolean()
