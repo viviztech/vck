@@ -10,7 +10,7 @@
     />
 
     {{-- Books Content --}}
-    <section class="py-20 lg:py-28 px-4 bg-gray-100 dark:bg-gray-900">
+    <section class="py-12 lg:py-16 px-4 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto">
             @if($books->isEmpty())
                 {{-- No Books Found --}}
@@ -45,82 +45,100 @@
                     </div>
                 </div>
             @else
-                {{-- Books Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-10">
+                {{-- Ecommerce Books Grid --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
                     @foreach($books as $bookIndex => $book)
                         @php
                             $delay = ($bookIndex % 4) * 100;
+                            $isInStock = $book->stock > 0 && $book->is_available;
+                            $isAvailable = $book->price > 0 && $isInStock;
                         @endphp
-                        {{-- Book Card with Gradient Border --}}
-                        <div class="group relative" data-aos="fade-up" data-aos-delay="{{ $delay }}">
-                            {{-- Animated Gradient Border --}}
-                            <div class="absolute -inset-0.5 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500"></div>
+                        {{-- Product Card --}}
+                        <div class="group bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 flex flex-col" data-aos="fade-up" data-aos-delay="{{ $delay }}">
+                            {{-- Image Container --}}
+                            <div class="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                @if($book->cover_image)
+                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                @else
+                                    {{-- Placeholder --}}
+                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+                                        <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                                
+                                {{-- Stock Badge --}}
+                                @if($isInStock)
+                                    <div class="absolute top-3 left-3">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                            <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full"></span>
+                                            In Stock
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="absolute top-3 left-3">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                            Out of Stock
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
 
-                            {{-- Card Content --}}
-                            <div class="relative bg-white dark:bg-gray-800 rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col h-full border border-amber-100 dark:border-amber-900/30">
-                                {{-- Image Container --}}
-                                <div class="relative h-72 overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30">
-                                     <a href="{{ route('books.show', $book->slug) }}" class="block w-full h-full">
-                                        @if($book->cover_image)
-                                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        @else
-                                            {{-- Placeholder --}}
-                                            <div class="w-full h-full flex items-center justify-center">
-                                                <div class="relative w-16 h-16">
-                                                    <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl opacity-20"></div>
-                                                    <div class="relative w-16 h-16 bg-white dark:bg-gray-900 rounded-2xl flex items-center justify-center">
-                                                        <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                     </a>
+                            {{-- Product Info --}}
+                            <div class="p-4 flex flex-col flex-grow">
+                                {{-- Author --}}
+                                @if($book->author)
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium uppercase tracking-wide">
+                                        {{ $book->author }}
+                                    </p>
+                                @endif
 
-                                     {{-- Gradient Overlay --}}
-                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                </div>
+                                {{-- Title --}}
+                                <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 leading-snug min-h-[2.5rem]">
+                                    {{ $book->title }}
+                                </h3>
 
-                                {{-- Content Container --}}
-                                <div class="p-6 flex flex-col flex-grow bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-950/20 dark:to-orange-950/20">
-                                    <h3 class="text-xl font-bold text-amber-900 dark:text-amber-100 mb-2 line-clamp-2 leading-tight">
-                                         <a href="{{ route('books.show', $book->slug) }}" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300">
-                                            {{ $book->title }}
-                                         </a>
-                                    </h3>
-                                    @if($book->author)
-                                        <p class="text-sm text-amber-600 dark:text-amber-400 mb-3 font-medium">by {{ $book->author }}</p>
-                                    @endif
-                                    @if($book->description)
-                                        <p class="text-sm text-amber-700/80 dark:text-amber-200/70 line-clamp-3 mb-4 flex-grow leading-relaxed">{{ $book->description }}</p>
-                                    @endif
-                                    
-                                    {{-- Price --}}
+                                {{-- Description --}}
+                                @if($book->description)
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-3 flex-grow leading-relaxed">
+                                        {{ $book->description }}
+                                    </p>
+                                @endif
+                                
+                                {{-- Price and Stock Info --}}
+                                <div class="mt-auto pt-3 border-t border-gray-200 dark:border-gray-700">
                                     @if($book->price > 0)
-                                        <div class="mb-4">
-                                            <p class="text-2xl font-bold text-amber-900 dark:text-amber-100">₹{{ number_format($book->price, 2) }}</p>
-                                            @if($book->stock > 0)
-                                                <p class="text-xs text-green-600 dark:text-green-400 mt-1">{{ $book->stock }} in stock</p>
-                                            @else
-                                                <p class="text-xs text-red-600 dark:text-red-400 mt-1">Out of stock</p>
+                                        <div class="flex items-baseline justify-between mb-3">
+                                            <div>
+                                                <span class="text-2xl font-bold text-gray-900 dark:text-gray-100">₹{{ number_format($book->price, 0) }}</span>
+                                                @if($book->price < 100)
+                                                    <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">.00</span>
+                                                @endif
+                                            </div>
+                                            @if($isInStock && $book->stock < 10)
+                                                <span class="text-xs text-orange-600 dark:text-orange-400 font-medium">
+                                                    Only {{ $book->stock }} left
+                                                </span>
                                             @endif
                                         </div>
                                     @endif
                                     
-                                    {{-- Action Buttons --}}
-                                    @if($book->price > 0 && $book->is_available && $book->stock > 0)
-                                        <div class="mt-auto pt-4">
-                                            <div class="relative group/btn">
-                                                <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl opacity-0 group-hover/btn:opacity-75 blur transition duration-300"></div>
-                                                <a href="{{ route('books.order', $book->slug) }}" class="relative inline-flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                                    </svg>
-                                                    Order Now
-                                                </a>
-                                            </div>
-                                        </div>
+                                    {{-- Add to Cart Button --}}
+                                    @if($isAvailable)
+                                        <a href="{{ route('books.order', $book->slug) }}" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition-colors duration-200 shadow-sm hover:shadow-md">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                            </svg>
+                                            Order Now
+                                        </a>
+                                    @elseif($book->price > 0)
+                                        <button disabled class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 text-sm font-semibold rounded-md cursor-not-allowed">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                            Unavailable
+                                        </button>
                                     @endif
                                 </div>
                             </div>

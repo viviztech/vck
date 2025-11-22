@@ -45,7 +45,6 @@ Route::group(
         Route::get('/donation/success', [PageController::class, 'donationSuccess'])->name('donation.success');
 
         Route::get('/books', [PageController::class, 'books'])->name('books');
-        Route::get('/books/{book}', [PageController::class, 'showBook'])->name('books.show');
         Route::get('/books/{book}/order', [PageController::class, 'bookOrder'])->name('books.order');
         Route::post('/book-orders', [BookOrderController::class, 'store'])->name('book-orders.store');
         Route::post('/book-orders/verify', [BookOrderController::class, 'verifyPayment'])->name('book-orders.verify');

@@ -179,7 +179,29 @@ class PageController extends Controller
     public function gallery()
     {
         $gallery = Media::orderBy('event_date', 'desc')->where('category_id', 5)->paginate(12);
-        return view('pages.gallery', compact('gallery'));
+        
+        // Sidebar data
+        $latestNews = Media::orderBy('event_date', 'desc')
+            ->where('category_id', 3)
+            ->take(5)
+            ->get();
+        
+        $latestEvents = Media::orderBy('event_date', 'desc')
+            ->where('category_id', 2)
+            ->take(5)
+            ->get();
+        
+        $latestVideos = Media::orderBy('event_date', 'desc')
+            ->where('category_id', 6)
+            ->take(5)
+            ->get();
+        
+        $pressReleases = Media::orderBy('event_date', 'desc')
+            ->where('category_id', 1)
+            ->take(5)
+            ->get();
+        
+        return view('pages.gallery', compact('gallery', 'latestNews', 'latestEvents', 'latestVideos', 'pressReleases'));
     }
 
     public function videos()
@@ -602,12 +624,6 @@ class PageController extends Controller
             ->get();
 
         return view('pages.books', compact('books'));
-    }
-
-    public function showBook($bookSlug)
-    {
-        $book = Book::active()->where('slug', $bookSlug)->firstOrFail();
-        return view('pages.book-viewer', compact('book'));
     }
 
     public function bookOrder($bookSlug)
