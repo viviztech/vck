@@ -222,7 +222,7 @@ public
 - `APP_ENV=production`
 - `APP_DEBUG=false`
 - `NODE_VERSION=20`
-- `PHP_VERSION=8.2` (if using PHP functions)
+- `PHP_VERSION=8.3` (if using PHP functions)
 
 ---
 

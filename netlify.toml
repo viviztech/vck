@@ -19,7 +19,7 @@
 
 [build.environment]
   # PHP version (Netlify Functions support)
-  PHP_VERSION = "8.2"
+  PHP_VERSION = "8.3"
   # Node version
   NODE_VERSION = "20"
   

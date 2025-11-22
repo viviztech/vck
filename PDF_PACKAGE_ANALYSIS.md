@@ -8,7 +8,7 @@
 - **Name:** spatie/laravel-pdf
 - **Version:** 1.8.0
 - **Type:** Modern PDF generation using Chromium/Browsershot
-- **Compatibility:** Laravel 10+, PHP 8.2+, Filament 4.x ✅
+- **Compatibility:** Laravel 10+, PHP 8.3+, Filament 4.x ✅
 
 ### Dependencies
 - `spatie/browsershot` (v4.0|v5.0) - Chromium-based PDF rendering
@@ -44,7 +44,7 @@
 
 ### Requirements Met ✅
 
-- ✅ PHP 8.2+ (You have PHP 8.2+)
+- ✅ PHP 8.3+ (You have PHP 8.3+)
 - ✅ Laravel 12.x (You have Laravel 12.x)
 - ✅ Filament 4.x (You have Filament 4.x)
 - ✅ Puppeteer installed (You have Puppeteer 24.30.0)

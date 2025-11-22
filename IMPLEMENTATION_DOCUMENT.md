@@ -36,7 +36,7 @@
 
 ### Backend
 - **Framework**: Laravel 12.x
-- **PHP Version**: PHP 8.2+
+- **PHP Version**: PHP 8.3+
 - **Database**: MySQL/PostgreSQL (configurable)
 - **Admin Panel**: Filament 4.x
 - **PDF Generation**: barryvdh/laravel-dompdf
@@ -736,7 +736,7 @@ php artisan optimize
 ```
 
 ### Server Requirements
-- PHP 8.2 or higher
+- PHP 8.3 or higher
 - MySQL 5.7+ or PostgreSQL 10+
 - Composer
 - Node.js and npm
